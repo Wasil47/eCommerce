@@ -1,8 +1,9 @@
 const express = require("express");
-const mysql = require("mysql");
 const cors = require("cors");
+const db = require("./db");
+const Product = require("./models/product.model");
 
-require("dotenv").config();
+// require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -10,45 +11,36 @@ const port = process.env.PORT || 4000;
 app.use(cors());
 // app.use(express.json());
 
-/* Set connect with SQL Database */
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: process.env.SQL_PASSWORD,
-  database: "shop_react_sql",
+// connect to database
+db.connect((err) => {
+  if (err) throw err;
+  console.log("Successfully connected to SQL database!");
 });
 
-connection.connect((err) => {
-  if (err) {
-    console.log(err);
-    return err;
-  } else {
-    console.log("Successfully connected to SQL database!");
-  }
-});
-/* If connection throw an error, try this commend in ur database:
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '<password>' */
 
 app.get("/", (req, res) => {
   res.send("go to /products to check products list.");
 });
 
-app.get("/products", (req, res) => {
-  const SELECT_ALL_PRODUCTS_QUERY = "SELECT * FROM products"; // Show all products
-  connection.query(SELECT_ALL_PRODUCTS_QUERY, (err, results) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.json({
-        data: results,
-      });
-      // res.send(results);
-    }
-  });
-});
+const routes = require('./routes/appRoutes');
+routes(app);
+// app.get("/products", (req, res) => {
+//   const SELECT_ALL_PRODUCTS_QUERY = "SELECT * FROM products"; // Show all products
+//   db.query(SELECT_ALL_PRODUCTS_QUERY, (err, results) => {
+//     if (err) {
+//       res.send(err);
+//     } else {
+//       res.json({
+//         data: results,
+//       });
+//       // res.send(results);
+//     }
+//   });
+// });
+
 app.get("/products/table", (req, res) => {
   const DESCRIBE_TABLE_PRODUCT_QUERY = "DESCRIBE products";
-  connection.query(DESCRIBE_TABLE_PRODUCT_QUERY, (err, results) => {
+  db.query(DESCRIBE_TABLE_PRODUCT_QUERY, (err, results) => {
     if (err) {
       res.send(err);
     } else {
@@ -60,27 +52,20 @@ app.get("/products/table", (req, res) => {
   });
 });
 
-function Product(product) {
-  // this.productId = product.productId;
-  this.productName = product.productName;
-  this.productPrice = product.productPrice;
-  this.productStock = product.productStock;
-  this.productImage = product.productImage;
-  this.productDesc = product.productDesc;
-};
-
 const test = {
-  productName: "testProduct 2",
-  productPrice: 666.6,
-  productStock: 10,
+  productName: "testProduct 4",
+  productPrice: 4444.63,
+  productStock: 40,
   productImage: null,
-  productDesc: "Test 222222222222product testin test",
+  productDesc: "T4444444444t 4 test",
 };
 
 app.get("/products/test", (req, res) => {
   const testProduct = new Product(test);
   res.send(testProduct);
-  // connection.query(
+  // Product.createProduct(testProduct);
+
+  // db.query(
   //   "INSERT INTO products SET ?",
   //   [testProduct],
   //   (err, result) => {
@@ -111,7 +96,7 @@ app.get("/products/add", (req, res) => {
   console.log(id, name, price, stock, img, desc);
   console.log(req.query);
 
-  // connection.query(INSERT_PRODUCTS_QUERY, (err, results)=>{
+  // db.query(INSERT_PRODUCTS_QUERY, (err, results)=>{
   //   if (err) {
   //     return res.send(err);
   //   }
