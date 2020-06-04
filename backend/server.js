@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+// const bodyParser = require('body-parser');
 const db = require("./db");
 const Product = require("./models/product.model");
 
@@ -9,7 +10,10 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 app.use(cors());
-// app.use(express.json());
+app.use(express.json());
+// app.use(express.urlencoded());
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
 
 // connect to database
 db.connect((err) => {
@@ -24,19 +28,7 @@ app.get("/", (req, res) => {
 
 const routes = require('./routes/appRoutes');
 routes(app);
-// app.get("/products", (req, res) => {
-//   const SELECT_ALL_PRODUCTS_QUERY = "SELECT * FROM products"; // Show all products
-//   db.query(SELECT_ALL_PRODUCTS_QUERY, (err, results) => {
-//     if (err) {
-//       res.send(err);
-//     } else {
-//       res.json({
-//         data: results,
-//       });
-//       // res.send(results);
-//     }
-//   });
-// });
+
 
 app.get("/products/table", (req, res) => {
   const DESCRIBE_TABLE_PRODUCT_QUERY = "DESCRIBE products";
@@ -52,6 +44,12 @@ app.get("/products/table", (req, res) => {
   });
 });
 
+app.post("/products/test", (req ,res)=> {
+  console.log(req.body);
+  res.send({status: 'success'});
+  // res.send(req.body);
+});
+
 const test = {
   productName: "testProduct 4",
   productPrice: 4444.63,
@@ -63,6 +61,8 @@ const test = {
 app.get("/products/test", (req, res) => {
   const testProduct = new Product(test);
   res.send(testProduct);
+  
+  
   // Product.createProduct(testProduct);
 
   // db.query(
@@ -75,36 +75,34 @@ app.get("/products/test", (req, res) => {
   // );
 });
 
-app.get("/products/add", (req, res) => {
-  const { id, name, price, stock, img, desc } = req.query;
-  const INSERT_PRODUCTS_QUERY = `INSERT INTO products (
-    productId,
-    productName,
-    productPrice,
-    productStock,
-    productImage,
-    productDesc)
-    VALUES (
-      ${id},
-      "${name}",
-      ${price},
-      ${stock},
-      "${img}",
-      "${desc}"
-    )`;
+// app.get("/products/add", (req, res) => {
+//   const { name, price, stock, img, desc } = req.query;
+//   const INSERT_PRODUCTS_QUERY = `INSERT INTO products (
+//     productName,
+//     productPrice,
+//     productStock,
+//     productImage,
+//     productDesc)
+//     VALUES (
+//       "${name}",
+//       ${price},
+//       ${stock},
+//       "${img}",
+//       "${desc}"
+//     )`;
 
-  console.log(id, name, price, stock, img, desc);
-  console.log(req.query);
+//   console.log(name, price, stock, img, desc);
+//   console.log(req.query);
 
-  // db.query(INSERT_PRODUCTS_QUERY, (err, results)=>{
-  //   if (err) {
-  //     return res.send(err);
-  //   }
-  //   else {
-  //     return res.send('Sucessfully added product');
-  //   }
-  // })
-});
+//   db.query(INSERT_PRODUCTS_QUERY, (err, results)=>{
+//     if (err) {
+//       return res.send(err);
+//     }
+//     else {
+//       return res.send('Sucessfully added product');
+//     }
+//   })
+// });
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

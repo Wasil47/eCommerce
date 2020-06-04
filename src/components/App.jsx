@@ -8,7 +8,7 @@ import Products from "./Products/Products";
 
 function App() {
   return (
-    <main>
+    <main className="container" style={{ paddingTop: "4rem" }}>
       <BrowserRouter>
         <Navbar />
         <Route exact path="/" component={Home} />
