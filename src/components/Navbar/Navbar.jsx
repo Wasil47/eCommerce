@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <NavLink className="navbar-brand" to="/">
         Ecommerce
       </NavLink>
@@ -28,6 +28,22 @@ function Navbar() {
           <li className="nav-item">
             <NavLink className="nav-link" to="/admin">
               Admin
+            </NavLink>
+          </li>
+        </ul>
+        <ul className="navbar-nav">
+        <li className="nav-item">
+            <a className="nav-link" href="#">
+              Log in / Sing up
+            </a>
+          </li>
+          <li className="nav-item">
+            <NavLink className="nav-item nav-link" to="/cart">
+              <i
+                className="fa fa-shopping-cart px-2"
+                aria-hidden="true"
+                style={{ fontSize: "1.3rem" }}
+              />
             </NavLink>
           </li>
         </ul>

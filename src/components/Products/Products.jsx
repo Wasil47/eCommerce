@@ -25,22 +25,22 @@ function Products() {
   const productDelete = (id) => {
     console.log(id);
     const requestOptions = {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     };
 
-    fetch("http://localhost:4000/products/"+id, requestOptions)
-    .then(response => response.json())
-    .then(response => {
-      if (response.status === 'success') {
-        console.log(response);
-        productsFetch();
-      }      
-    })
-    .catch(error => console.log("error", error));
-  }
+    fetch("http://localhost:4000/products/" + id, requestOptions)
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === "success") {
+          console.log(response);
+          productsFetch();
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
 
   return (
     <div className="container-xl">
@@ -53,9 +53,11 @@ function Products() {
           <div className="row">
             {/* Product: */}
             {products.map((product) => (
-              <Product product={product} 
-              key={product.productId} 
-              delete={productDelete} />
+              <Product
+                product={product}
+                key={product.productId}
+                delete={productDelete}
+              />
             ))}
             {/* Product End */}
           </div>
