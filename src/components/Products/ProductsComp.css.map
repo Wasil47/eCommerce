@@ -2,8 +2,8 @@
     "version": 3,
     "mappings": "AAAA,AACE,KADG,CACH,EAAE;AADJ,KAAK,CAEH,EAAE,CAAC;EACD,MAAM,EAAE,eAAe;EACvB,OAAO,EAAE,KAAK;CACf",
     "sources": [
-        "Products.scss"
+        "ProductsComp.scss"
     ],
     "names": [],
-    "file": "Products.css"
+    "file": "ProductsComp.css"
 }

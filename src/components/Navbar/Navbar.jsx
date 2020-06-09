@@ -32,10 +32,10 @@ function Navbar() {
           </li>
         </ul>
         <ul className="navbar-nav">
-        <li className="nav-item">
-            <a className="nav-link" href="#">
+          <li className="nav-item">
+            <NavLink className="nav-link" to="/user">
               Log in / Sing up
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
             <NavLink className="nav-item nav-link" to="/cart">

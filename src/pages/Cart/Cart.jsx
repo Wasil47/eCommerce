@@ -1,61 +1,25 @@
 import React from "react";
 import "./Cart.css";
-import testImg from "../../components/Products/Product/testProduct.jpg";
+import ShoppingCart from "../../components/ShoppingCart/ShoppingCart";
+import AddressCard from "../../components/AddressCard/AddressCard";
 
 function Cart() {
+  const handleClick = () => {
+    console.log("shipping methods");
+  };
+  const handleClick2 = () => {
+    console.log("pay");
+  };
   return (
-    <div className="card">
-      <div className="card-header bg-secondary text-white">
-        <h5 className="mr-auto">Shopping Cart</h5>
-      </div>
-      <div className="card-body">
-        <div className="row">
-          <div className="col-md">
-            <img className="cartImg" src={testImg} alt="testImg" />
-          </div>
-          <div className="col-md">
-            <h5>Product Name</h5>
-            <p>Product description.</p>
-          </div>
-          <div className="col-md row align-items-center px-0 m-0">
-
-            <div className="col-4">
-              <div className="quantity ">
-                <input
-                  type="button"
-                  value="+"
-                  className="countBtn"
-                />
-                <input
-                  type="number"
-                  min="1"
-                  max="100"
-                  step="1"
-                  className="countItem text-right"
-                />
-                <input
-                  type="button"
-                  value="-"
-                  className="countBtn"
-                />
-              </div>
-            </div>
-            <div className="col-5">
-              <h6 className="my-0">x $ 999.99</h6>
-            </div>
-            <div className="col-3">
-              <button className="btn btn-outline-danger">
-                <i className="fa fa-trash" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="card-footer">
-        <h5 className="pull-right">
-          <span className="text-muted">Total price: </span>$ 999.99
-        </h5>
-      </div>
+    <div className="d-flex flex-column">
+      <ShoppingCart />
+      <button onClick={handleClick} className="btn btn-info my-3 ml-auto">
+        Shipping Methods
+      </button>
+      <AddressCard />
+      <button onClick={handleClick2} className="btn btn-success my-3 ml-auto">
+        Finalize Order
+      </button>
     </div>
   );
 }

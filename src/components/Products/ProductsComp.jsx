@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./Products.css";
+import "./ProductsComp.css";
 import Product from "./Product/Product";
 
-function Products() {
+function ProductsComp() {
   const [products, setProducts] = useState([]);
   const keys = ["Id", "Name", "Price", "Stock", "Image", "Description"];
 
@@ -67,4 +67,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default ProductsComp;

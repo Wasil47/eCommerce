@@ -1,6 +1,7 @@
 import React from "react";
 import "./Product.css";
 import testImg from "./testProduct.jpg";
+import { Link } from "react-router-dom";
 
 function Product(props) {
   const p = props.product;
@@ -14,7 +15,8 @@ function Product(props) {
   return (
     <div className="col-md-6 col-lg-4 col-xl-3 mb-4">
       <div className="card h-100 product">
-        <a href="#" className="">
+        {/* <a href="#" className=""> */}
+        <Link to={`/products/${p.productId}`}>
           <img
             // src={p.productImage}
             src={testImg}
@@ -22,7 +24,8 @@ function Product(props) {
             className="card-img-top"
             alt={p.productName}
           />
-        </a>
+        </Link>
+        {/* </a> */}
         <div className="card-body d-flex flex-column">
           <h5 className="card-title">{p.productName}</h5>
           <p className="card-text">${p.productPrice}</p>
@@ -34,7 +37,10 @@ function Product(props) {
             </small>
           </p>
 
-          <button onClick={handleClick} className="mt-auto btn btn-warning btn-block">
+          <button
+            onClick={handleClick}
+            className="mt-auto btn btn-warning btn-block"
+          >
             Add to Cart
           </button>
           <button onClick={onDelete} className="btn btn-danger btn-block">

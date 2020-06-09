@@ -1,6 +1,13 @@
 const db = require("../db");
 const formidable = require("formidable");
 
+const SELECT_ALL_PRODUCTS_QUERY = "SELECT * FROM products";
+const DESCRIBE_TABLE = "DESCRIBE products";
+const INSERT_INTO_PRODUCTS = "INSERT INTO products SET ?";
+const DELETE_FROM_PRODUCTS_ID = "DELETE FROM products WHERE productId = ";
+const SELECT_PRODUCT_BY_ID = "SELECT * FROM products WHERE productId = ";
+const UPDATE_PRODUCT = "UPDATE products SET ? WHERE productId = ";
+
 const formidableOptions = {
   // multiples: true,
   uploadDir: "uploads/",
@@ -15,32 +22,8 @@ function Product(product) {
   this.productImage = product.productImage;
   this.productDesc = product.productDesc;
 }
-
-Product.showAllProducts = (req, res) => {
-  const SELECT_ALL_PRODUCTS_QUERY = "SELECT * FROM products";
-  db.query(SELECT_ALL_PRODUCTS_QUERY, (err, results) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.json(results);
-    }
-  });
-};
-
-Product.describeProductsTable = (req, res) => {
-  const DESCRIBE_TABLE = "DESCRIBE products";
-  db.query(DESCRIBE_TABLE, (err, results) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.json(results);
-    }
-  });
-};
-
+// CREATE
 Product.createProduct = (req, res) => {
-  const INSERT_INTO_PRODUCTS = "INSERT INTO products SET ?";
-
   form
     .on("fileBegin", (name, file) => {
       //rename the incoming file to the file's name
@@ -51,26 +34,26 @@ Product.createProduct = (req, res) => {
     })
     .parse(req, (err, fields, files) => {
       if (err) {
-        res.send({ status: "upload fail" });
+        res.write({ status: "upload fail" });
         console.log("upload error", err);
       } else {
         fields.productImage = files.productImage.path;
         db.query(INSERT_INTO_PRODUCTS, fields, (error, results) => {
           if (error) {
             console.log("mySQL error: ", error);
-            res.send({ status: "sql fail" });
+            res.write({ status: "sql fail" });
           } else {
             console.log("New product added, id: " + results.insertId);
-            res.send({ status: "success" });
+            res.write({ status: "success" });
+            // res.end();
           }
         });
       }
     });
-  // res.send({ status: "success" });
+  res.end();
 };
 
 Product.createProductNoImage = (req, res) => {
-  const INSERT_INTO_PRODUCTS = "INSERT INTO products SET ?";
   console.log(req.body);
   const newProduct = req.body;
   db.query(INSERT_INTO_PRODUCTS, newProduct, (err, results) => {
@@ -84,9 +67,59 @@ Product.createProductNoImage = (req, res) => {
   });
 };
 
+// READ
+Product.showAllProducts = (req, res) => {
+  db.query(SELECT_ALL_PRODUCTS_QUERY, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(results);
+    }
+  });
+};
+
+Product.showProductById = (req, res) => {
+  const productId = req.params.id;
+  // console.log(SELECT_PRODUCT_BY_ID + productId);
+  db.query(SELECT_PRODUCT_BY_ID + productId, (err, results) => {
+    if (err) {
+      console.log("error: ", err);
+      res.send({ status: "fail" });
+    } else {
+      res.json(results[0]);
+    }
+  });
+};
+
+Product.describeProductsTable = (req, res) => {
+  db.query(DESCRIBE_TABLE, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(results);
+    }
+  });
+};
+
+// UPDATE
+Product.updateProduct = (req, res) => {
+  const productId = req.params.id;
+  const updatedProduct = req.body;
+  console.log(updatedProduct);
+  db.query(UPDATE_PRODUCT + productId, updatedProduct, (err, results) => {
+    if (err) {
+      console.log("error: ", err);
+      res.send({ status: "fail" });
+    } else {
+      console.log("Product updated, id: " + productId, results.message);
+      res.send({ status: "success" });
+    }
+  });
+};
+
+// DELETE
 Product.deleteProduct = (req, res) => {
   const productId = req.params.id;
-  const DELETE_FROM_PRODUCTS_ID = "DELETE FROM products WHERE productId = ";
   console.log(DELETE_FROM_PRODUCTS_ID + productId);
   db.query(DELETE_FROM_PRODUCTS_ID + productId, (err, results) => {
     if (err) {

@@ -8,6 +8,7 @@ const db = require("./db");
 const app = express();
 const port = process.env.PORT || 4000;
 
+app.use("/uploads", express.static("uploads")); // set uploads folder to public (static)
 app.use(cors());
 app.use(express.json());
 // app.use(express.urlencoded());
