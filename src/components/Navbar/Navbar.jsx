@@ -27,14 +27,14 @@ function Navbar() {
           </li>
           <li className="nav-item">
             <NavLink className="nav-link" to="/admin">
-              Admin
+              Admin Panel
             </NavLink>
           </li>
         </ul>
         <ul className="navbar-nav">
           <li className="nav-item">
             <NavLink className="nav-link" to="/user">
-              Log in / Sing up
+              Log In / Sing Up
             </NavLink>
           </li>
           <li className="nav-item">

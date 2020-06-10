@@ -18,10 +18,24 @@ module.exports = (app) => {
   .get(Product.showProductById)
   .patch(Product.updateProduct)
   .delete(Product.deleteProduct);
-  app.route("/products/table")
+  app.route("/products-table")
   .get(Product.describeProductsTable);
   app.route("/user")
   .get(User.showUserByNameLastname)
-  .post(User.test);
-  // .post(User.createUser);
+  app.route("/user/register")
+  .post(User.createUser);
+  app.route("/user/login")
+  .post(User.loginByLoginPassword);
+  app.route("/admin/login")
+  .post((req, res)=> {
+    const admin = req.body;
+    const login = admin.login;
+    const password = admin.password;
+    if (login === 'admin' & password === 'admin') {
+      res.send({ status: "Success Login" });
+    } else {
+      res.send({ status: "Wrong login or password" });
+    }
+  })
+
 };

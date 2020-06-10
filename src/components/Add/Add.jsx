@@ -89,7 +89,7 @@ function Add() {
 
   return (
     <div className="container">
-      <h2>Add product:</h2>
+      <h2>Add new product:</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="productName">Name</label>

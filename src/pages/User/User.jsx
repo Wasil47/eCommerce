@@ -1,20 +1,29 @@
-import React from "react";
+import React, { useState, Fragment } from "react";
 import Login from "../../components/Login/Login";
 import Register from "../../components/Register/Register";
+import UserPanel from "../../components/UserPanel/UserPanel";
 
 function User() {
+  /* TEST LOGIN  */
+  const [loggedIn, setLoggedIn] = useState(false);
+  const logIn = (boolean) => {
+    console.log(boolean);
+    setLoggedIn(boolean);
+  };
+  /* TEST LOGIN END */
+
   return (
     <div className="container-xl">
       <h1>Hello User!</h1>
       <div className="row">
-        <div className="col-md-6 my-2">
-          <h3 className="text-secondary">Login</h3>
-          <Login />
-        </div>
-        <div className="col-md-6 my-2">
-          <h3 className="text-secondary">Register</h3>
-          <Register />
-        </div>
+        {loggedIn ? (
+          <UserPanel />
+        ) : (
+          <Fragment>
+            <Login logIn={logIn} />
+            <Register />
+          </Fragment>
+        )}
       </div>
     </div>
   );

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import "./ProductsComp.css";
-import Product from "./Product/Product";
+import React, { useEffect, useState } from "react";
+import AdminProduct from "./AdminProduct/AdminProduct";
 
-function ProductsComp() {
+function AdminProducts() {
   const [products, setProducts] = useState([]);
   const keys = ["Id", "Name", "Price", "Stock", "Image", "Description"];
 
@@ -41,20 +40,20 @@ function ProductsComp() {
       })
       .catch((error) => console.log("error", error));
   };
-
   return (
-    <div className="container-xl">
+    <div className="container px-0 mt-4">
       <div className="col">
         <h1>Products:</h1>
       </div>
       {/* Products: */}
-      <div className="row">
+      <div className="d-flex flex-column">
         {/* Product: */}
         {products.map((product) => (
-          <Product
+          <AdminProduct
             product={product}
             key={product.productId}
             delete={productDelete}
+            productsFetch={productsFetch}
           />
         ))}
         {/* Product End */}
@@ -63,4 +62,4 @@ function ProductsComp() {
   );
 }
 
-export default ProductsComp;
+export default AdminProducts;

@@ -18,7 +18,7 @@ function Product(props) {
         {/* <a href="#" className=""> */}
         <Link to={`/products/${p.productId}`}>
           <img
-            // src={p.productImage}
+            // src={p.productImage ? p.productImage : testImg}
             src={testImg}
             // src={require(`${p.productImage}`)}
             className="card-img-top"
@@ -27,7 +27,12 @@ function Product(props) {
         </Link>
         {/* </a> */}
         <div className="card-body d-flex flex-column">
-          <h5 className="card-title">{p.productName}</h5>
+          <Link
+            to={`/products/${p.productId}`}
+            style={{ color: "#000", textDecoration: "none" }}
+          >
+            <h5 className="card-title">{p.productName}</h5>
+          </Link>
           <p className="card-text">${p.productPrice}</p>
           <p className="card-text">
             <small className="text-muted">
@@ -42,9 +47,6 @@ function Product(props) {
             className="mt-auto btn btn-warning btn-block"
           >
             Add to Cart
-          </button>
-          <button onClick={onDelete} className="btn btn-danger btn-block">
-            Delete
           </button>
         </div>
       </div>

@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 
-function Login(props) {
-  const initialUser = {
-    login: "test",
-    password: "test",
+function AdminLogin(props) {
+  const initialAdmin = {
+    login: "admin",
+    password: "admin",
   };
-  const [user, setUser] = useState(initialUser);
+  const [admin, setAdmin] = useState(initialAdmin);
   const [fail, setFail] = useState(false);
   const handleChange = (event) => {
     const key = event.target.name,
       value = event.target.value;
-    setUser({
-      ...user,
+    setAdmin({
+      ...admin,
       [key]: value,
     });
   };
-  const checkUserNameLastname = () => {
+  const checkAdminNameLastname = () => {
     // const formData = new FormData(event.target);
-    const rawData = JSON.stringify(user);
+    const rawData = JSON.stringify(admin);
     const requestOptions = {
       method: "POST",
       body: rawData,
@@ -25,15 +25,13 @@ function Login(props) {
         "Content-Type": "application/json",
       },
     };
-    fetch("http://localhost:4000/user/login", requestOptions)
+    fetch("http://localhost:4000/admin/login", requestOptions)
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
         if (response.status === "Success Login") {
           setFail(false);
-          /* TEST LOGIN  */
           props.logIn(true);
-          /* TEST LOGIN END */
         } else if (response.status === "Wrong login or password") {
           setFail(true);
         }
@@ -42,7 +40,7 @@ function Login(props) {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    checkUserNameLastname();
+    checkAdminNameLastname();
   };
   return (
     <div className="col-md-6 my-2">
@@ -51,26 +49,26 @@ function Login(props) {
         <div className="form-group">
           <label htmlFor="login">Login</label>
           <input
-            value={user.login}
+            value={admin.login}
             onChange={handleChange}
             type="text"
             name="login"
             className="form-control"
             required
           />
-          <small className="form-text text-muted">login: test</small>
+          <small className="form-text text-muted">login: admin</small>
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
-            value={user.password}
+            value={admin.password}
             onChange={handleChange}
             type="password"
             name="password"
             className="form-control"
             required
           />
-          <small className="form-text text-muted">password: test</small>
+          <small className="form-text text-muted">password: admin</small>
         </div>
         <button type="submit" className="btn btn-primary">
           Login
@@ -85,4 +83,4 @@ function Login(props) {
   );
 }
 
-export default Login;
+export default AdminLogin;
