@@ -16,6 +16,10 @@ function UserPanel() {
       [key]: value,
     });
   };
+  const logout = () => {
+    localStorage.removeItem("user");
+    window.location.reload();
+  };
   return (
     <div className="col my-2">
       <h3 className="text-secondary">User panel:</h3>
@@ -92,6 +96,9 @@ function UserPanel() {
           <button className="btn btn-danger pull-right">Change data</button>
         </div>
       </div>
+      <button onClick={logout} className="btn btn-danger mt-2">
+        Logout
+      </button>
     </div>
   );
 }

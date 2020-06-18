@@ -25,6 +25,7 @@ module.exports = (app) => {
   app.route("/user/register")
   .post(User.createUser);
   app.route("/user/login")
+  .get(User.checkToken)
   .post(User.loginByLoginPassword);
   app.route("/admin/login")
   .post((req, res)=> {

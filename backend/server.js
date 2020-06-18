@@ -1,17 +1,31 @@
 const express = require("express");
 const cors = require("cors");
 // const bodyParser = require('body-parser');
-const db = require("./db");
+const db = require("./config/db.config");
 // const Product = require("./models/product.model");
+// const session = require("express-session"); // create cookis
 
-// require("dotenv").config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+console.log(process.env.NODE_ENV);
+
 const app = express();
 const port = process.env.PORT || 4000;
 
 app.use("/uploads", express.static("uploads")); // set uploads folder to public (static)
 app.use(cors());
 app.use(express.json());
-// app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
+
+
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
 
 // connect to database
 db.connect((err) => {

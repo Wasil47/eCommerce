@@ -1,4 +1,5 @@
-const db = require("../db");
+const db = require("../config/db.config");
+const jwt = require("jsonwebtoken");
 
 const INSERT_INTO_CUSTOMERS = "INSERT INTO customers SET ?";
 const SELECT_USER_BY_NAME_LASTNAME =
@@ -7,6 +8,10 @@ const CHECK_LOGIN_PASSWORD =
   "SELECT * FROM customers WHERE login = ? AND password = BINARY ?";
 const CHECK_LOGIN = "SELECT * FROM customers WHERE login = ?";
 
+// session and auth
+const jwtConfig = {
+  secret: "myLittleTestSecret",
+};
 function User(customer) {
   // this.customerId = customer.customerId;
   this.customerName = customer.customerName;
@@ -60,8 +65,19 @@ User.loginByLoginPassword = (req, res) => {
         res.send({ status: "fail" });
       } else {
         if (results.length > 0) {
+          // success login
           console.log(results);
-          res.send({ status: "Success Login" });
+          // create json web token
+          let token = jwt.sign({ login: user.login }, jwtConfig.secret, {
+            expiresIn: 3600, // 1 hour
+          });
+          res.status(200).send({
+            login: user.login,
+            accessToken: token,
+            message: "Success Login",
+          });
+          //
+          // res.send({ status: "Success Login" });
         } else {
           res.send({ status: "Wrong login or password" });
         }
@@ -85,6 +101,27 @@ User.showUserByNameLastname = (req, res) => {
       }
     }
   );
+};
+
+User.checkToken = (req, res, next) => {
+  console.log(req.headers);
+  let token = req.headers["x-access-token"];
+  if (!token) {
+    return res.status(403).send({
+      message: "No token provided!",
+    });
+  }
+  jwt.verify(token, jwtConfig.secret, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({
+        message: "Unauthorized!",
+      });
+    }
+    console.log(decoded);
+    req.login = decoded.login; // ? do I even need this?
+    // next();
+    res.sendStatus(200);
+  });
 };
 
 module.exports = User;

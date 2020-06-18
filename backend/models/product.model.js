@@ -1,4 +1,4 @@
-const db = require("../db");
+const db = require("../config/db.config");
 const formidable = require("formidable");
 
 const SELECT_ALL_PRODUCTS_QUERY = "SELECT * FROM products";

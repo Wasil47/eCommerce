@@ -26,13 +26,18 @@ function Login(props) {
       },
     };
     fetch("http://localhost:4000/user/login", requestOptions)
-      .then((response) => response.json())
+      .then((response) => response.json()) // todo: if status==200 ->json
       .then((response) => {
         console.log(response);
-        if (response.status === "Success Login") {
+        console.log(response.status);
+        if (response.message === "Success Login") {
           setFail(false);
           /* TEST LOGIN  */
           props.logIn(true);
+          if (response.accessToken) {
+            localStorage.setItem("user", JSON.stringify(response));
+          }
+          
           /* TEST LOGIN END */
         } else if (response.status === "Wrong login or password") {
           setFail(true);
