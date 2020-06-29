@@ -15,7 +15,7 @@ function Login(props) {
       [key]: value,
     });
   };
-  const checkUserNameLastname = () => {
+  const checkLoginPassword = () => {
     // const formData = new FormData(event.target);
     const rawData = JSON.stringify(user);
     const requestOptions = {
@@ -28,8 +28,8 @@ function Login(props) {
     fetch("http://localhost:4000/user/login", requestOptions)
       .then((response) => response.json()) // todo: if status==200 ->json
       .then((response) => {
-        console.log(response);
-        console.log(response.status);
+        // console.log(response);
+        // console.log(response.status);
         if (response.message === "Success Login") {
           setFail(false);
           /* TEST LOGIN  */
@@ -47,7 +47,7 @@ function Login(props) {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    checkUserNameLastname();
+    checkLoginPassword();
   };
   return (
     <div className="col-md-6 my-2">

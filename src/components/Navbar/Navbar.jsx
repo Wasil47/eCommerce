@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-function Navbar() {
+function Navbar(props) {
   return (
     <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <NavLink className="navbar-brand" to="/">

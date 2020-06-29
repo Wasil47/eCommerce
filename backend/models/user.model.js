@@ -4,9 +4,12 @@ const jwt = require("jsonwebtoken");
 const INSERT_INTO_CUSTOMERS = "INSERT INTO customers SET ?";
 const SELECT_USER_BY_NAME_LASTNAME =
   "SELECT * FROM customers WHERE customerName = ? AND customerLastname = ?";
+  const SELECT_USER_BY_LOGIN =
+  "SELECT * FROM customers WHERE login = ?";
 const CHECK_LOGIN_PASSWORD =
   "SELECT * FROM customers WHERE login = ? AND password = BINARY ?";
 const CHECK_LOGIN = "SELECT * FROM customers WHERE login = ?";
+const UPDATE_USER = "UPDATE customers SET ? WHERE login = ?"
 
 // session and auth
 const jwtConfig = {
@@ -103,6 +106,23 @@ User.showUserByNameLastname = (req, res) => {
   );
 };
 
+User.showUserByLogin = (req, res) => {
+  const user = req.body;
+  db.query(
+    SELECT_USER_BY_LOGIN,
+    [user.login],
+    (err, results) => {
+      if (err) {
+        console.log("error: ", err);
+        res.send({ status: "fail" });
+      } else {
+        console.log(results);
+        res.send(results);
+      }
+    }
+  );
+};
+
 User.checkToken = (req, res, next) => {
   console.log(req.headers);
   let token = req.headers["x-access-token"];
@@ -120,8 +140,37 @@ User.checkToken = (req, res, next) => {
     console.log(decoded);
     req.login = decoded.login; // ? do I even need this?
     // next();
-    res.sendStatus(200);
+    db.query(
+      SELECT_USER_BY_LOGIN,
+      [decoded.login],
+      (err, results) => {
+        if (err) {
+          console.log("error: ", err);
+          res.send({ status: "fail" });
+        } else {
+          console.log(results);
+          res.status(200).send(results[0]);
+        }
+      }
+    );
+
+    // res.sendStatus(200);
   });
 };
+
+// UPDATE
+User.updateUserData = (req, res) => {
+  const user = req.body;
+  db.query(UPDATE_USER, [user, user.login], (err, results) => {
+    if (err) {
+      console.log("error: ", err);
+      res.send({ status: "fail" });
+    } else {
+      console.log("Product updated, id: " + user.login, results.message);
+      res.status(200).send({ message: "success" });
+    }
+  })
+
+}
 
 module.exports = User;

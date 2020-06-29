@@ -3,12 +3,22 @@ import Login from "../../components/Login/Login";
 import Register from "../../components/Register/Register";
 import UserPanel from "../../components/UserPanel/UserPanel";
 
-function User() {
+function User(props) {
   /* TEST LOGIN  */
+  const initialUser = {
+    customerId: "",
+    customerName: "",
+    customerLastname: "",
+    customerAddress: "",
+    login: "",
+    password: "",
+  };
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(initialUser);
   const logIn = (boolean) => {
-    console.log(boolean);
     setLoggedIn(boolean);
+    window.location.reload();
   };
   /* TEST LOGIN END */
 
@@ -16,7 +26,6 @@ function User() {
   const checkLoggedIn = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      console.log(user);
       const requestOptions = {
         method: "GET",
         headers: {
@@ -24,21 +33,21 @@ function User() {
         },
       };
       fetch("http://localhost:4000/user/login", requestOptions)
-        // .then((response) => response.json())
         .then((response) => {
-          console.log(response);
-          console.log(response.status);
-          // if (response.message === "Success Login") {
           if (response.status === 200) {
-            console.log("test");
-            /* TEST LOGIN  */
-            setLoggedIn(true);
-            /* TEST LOGIN END */
-          } else if (response.status === "Wrong login or password") {
-            return false;
+            return response.json();
           }
         })
+        .then((data) => {
+          if (data) {
+            setUserData(data);
+            setLoggedIn(true);
+          }
+          setLoading(false);
+        })
         .catch((error) => console.log("frontend error", error));
+    } else {
+      setLoading(false);
     }
   };
   //
@@ -50,22 +59,28 @@ function User() {
   }, []);
 
   return (
-    <div className="container-xl">
-      <h1>Hello User!</h1>
-      <div className="row">
-        {loggedIn ? (
-          <UserPanel />
-        ) : (
-          <Fragment>
-            <Login logIn={logIn} />
-            <Register />
-            <button onClick={logout} className="btn btn-danger mt-2">
-              Logout
-            </button>
-          </Fragment>
-        )}
-      </div>
-    </div>
+    <Fragment>
+      {!loading && (
+        <div className="container-xl">
+          <h1>
+            Hello {userData.customerName ? userData.customerName : "User"}!
+          </h1>
+          <div className="row">
+            {loggedIn ? (
+              <UserPanel logIn={loggedIn} userData={userData} />
+            ) : (
+              <Fragment>
+                <Login logIn={logIn} />
+                <Register />
+                <button onClick={logout} className="btn btn-danger mt-2">
+                  Logout
+                </button>
+              </Fragment>
+            )}
+          </div>
+        </div>
+      )}
+    </Fragment>
   );
 }
 

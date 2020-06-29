@@ -21,7 +21,10 @@ module.exports = (app) => {
   app.route("/products-table")
   .get(Product.describeProductsTable);
   app.route("/user")
-  .get(User.showUserByNameLastname)
+  .get(User.showUserByNameLastname);
+  app.route("/user/authorized")
+  .get(User.showUserByLogin)
+  .patch(User.updateUserData);  
   app.route("/user/register")
   .post(User.createUser);
   app.route("/user/login")
