@@ -30,7 +30,6 @@ function ProductsComp() {
         "Content-Type": "application/json",
       },
     };
-
     fetch("http://localhost:4000/products/" + id, requestOptions)
       .then((response) => response.json())
       .then((response) => {
@@ -40,6 +39,24 @@ function ProductsComp() {
         }
       })
       .catch((error) => console.log("error", error));
+  };
+
+  const addProductToCart = (product) => {
+    const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
+    console.log(product);
+    const findDuplicate = () => {
+      return cartProducts.findIndex((p) => p.productId === product.productId);
+    };
+    const duplicateIndex = findDuplicate();
+    if (duplicateIndex === -1) {
+      product.quantity = 1;
+      cartProducts.push(product);
+    } else {
+      product.quantity++;
+      cartProducts.splice(duplicateIndex, 1, product);
+    }
+    localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+    console.log(cartProducts);
   };
 
   return (
@@ -55,6 +72,7 @@ function ProductsComp() {
             product={product}
             key={product.productId}
             delete={productDelete}
+            toCart={addProductToCart}
           />
         ))}
         {/* Product End */}

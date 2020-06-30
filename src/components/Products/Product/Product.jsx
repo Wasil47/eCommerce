@@ -5,13 +5,15 @@ import { Link } from "react-router-dom";
 
 function Product(props) {
   const p = props.product;
-  const handleClick = () => {
-    console.log("click!");
-    console.log(p.productImage);
-  };
   const onDelete = () => {
     props.delete(p.productId);
   };
+  const addToCart = () => {
+    props.toCart(p);
+    console.log("click!");
+    // console.log(p);
+  };
+
   return (
     <div className="col-md-6 col-lg-4 col-xl-3 mb-4">
       <div className="card h-100 product">
@@ -43,7 +45,7 @@ function Product(props) {
           </p>
 
           <button
-            onClick={handleClick}
+            onClick={addToCart}
             className="mt-auto btn btn-warning btn-block"
           >
             Add to Cart

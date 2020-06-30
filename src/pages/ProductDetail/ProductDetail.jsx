@@ -32,6 +32,7 @@ function ProductDetail() {
 
   const handleClick = () => {
     console.log("click");
+    console.log(product.productId);
   };
   return (
     <div className="row border rounded">

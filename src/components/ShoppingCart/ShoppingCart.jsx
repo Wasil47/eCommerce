@@ -1,50 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./ShoppingCart.css";
-import testImg from "../Products/Product/testProduct.jpg";
+import CartProduct from "./CartProduct/CartProduct";
 
 function ShoppingCart() {
+  const initialCart = JSON.parse(localStorage.getItem("cartProducts")) || [];
+  const [cartProducts, setCartProducts] = useState(initialCart);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  // const checkPrice = (price) => {
+  //   setTotalPrice(price);
+  // };
+
+  // useEffect(() => {
+  //   checkPrice();
+  // }, []);
+
   return (
     <div className="card">
       <div className="card-header bg-secondary text-white">
         <h5 className="mr-auto">Shopping Cart</h5>
       </div>
-      <div className="card-body">
-        <div className="row">
-          <div className="col-md">
-            <img className="cartImg" src={testImg} alt="testImg" />
-          </div>
-          <div className="col-md">
-            <h5>Product Name</h5>
-            <p>Product description.</p>
-          </div>
-          <div className="col-md row align-items-center px-0 m-0">
-            <div className="col-4">
-              <div className="quantity ">
-                <input type="button" value="+" className="countBtn" />
-                <input
-                  type="number"
-                  min="1"
-                  max="100"
-                  step="1"
-                  className="countItem text-right"
-                />
-                <input type="button" value="-" className="countBtn" />
-              </div>
-            </div>
-            <div className="col-5">
-              <h6 className="my-0">x $ 999.99</h6>
-            </div>
-            <div className="col-3">
-              <button className="btn btn-outline-danger">
-                <i className="fa fa-trash" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      {cartProducts.map((product, index) => (
+        <CartProduct product={product} key={index} />
+      ))}
       <div className="card-footer">
         <h5 className="pull-right">
-          <span className="text-muted">Price: </span>$ 999.99
+          <span className="text-muted">Price: </span>$
+          {Math.round(totalPrice * 100) / 100}
         </h5>
       </div>
     </div>
