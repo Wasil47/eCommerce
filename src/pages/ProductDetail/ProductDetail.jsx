@@ -30,9 +30,26 @@ function ProductDetail() {
     productFetch();
   }, []);
 
-  const handleClick = () => {
-    console.log("click");
-    console.log(product.productId);
+  const addToCart = () => {
+    const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
+    console.log(product);
+    const findDuplicate = () => {
+      return cartProducts.findIndex((p) => p.productId === product.productId);
+    };
+    const duplicateIndex = findDuplicate();
+    const findProduct = () => {
+      return cartProducts.find((p) => p.productId === product.productId);
+    };
+    const foundProduct = findProduct();
+    if (duplicateIndex === -1) {
+      product.quantity = 1;
+      cartProducts.push(product);
+    } else {
+      product.quantity = foundProduct.quantity + 1;
+      cartProducts.splice(duplicateIndex, 1, product);
+    }
+    localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+    console.log(cartProducts);
   };
   return (
     <div className="row border rounded">
@@ -48,7 +65,7 @@ function ProductDetail() {
           <dd>{product.productDesc}</dd>
         </dl>
         <button
-          onClick={handleClick}
+          onClick={addToCart}
           className="mt-auto btn btn-warning font-weight-bold"
         >
           <i

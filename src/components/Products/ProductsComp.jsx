@@ -48,11 +48,15 @@ function ProductsComp() {
       return cartProducts.findIndex((p) => p.productId === product.productId);
     };
     const duplicateIndex = findDuplicate();
+    const findProduct = () => {
+      return cartProducts.find((p) => p.productId === product.productId);
+    };
+    const foundProduct = findProduct();
     if (duplicateIndex === -1) {
       product.quantity = 1;
       cartProducts.push(product);
     } else {
-      product.quantity++;
+      product.quantity = foundProduct.quantity + 1;
       cartProducts.splice(duplicateIndex, 1, product);
     }
     localStorage.setItem("cartProducts", JSON.stringify(cartProducts));

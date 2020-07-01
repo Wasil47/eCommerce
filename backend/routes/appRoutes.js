@@ -1,5 +1,6 @@
 const Product = require("../models/product.model");
 const User = require("../models/user.model");
+const Order = require("../models/order.model");
 
 // module.exports = (app) => {
 //   app.route("/products")
@@ -30,6 +31,8 @@ module.exports = (app) => {
   app.route("/user/login")
   .get(User.checkToken)
   .post(User.loginByLoginPassword);
+  app.route("/orders/create")
+  .post(Order.createNewOrder);
   app.route("/admin/login")
   .post((req, res)=> {
     const admin = req.body;

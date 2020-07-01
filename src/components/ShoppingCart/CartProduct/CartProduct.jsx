@@ -18,7 +18,7 @@ function CartProduct(props) {
   const checkQuantityPrice = (e) => {
     setNewQuantity(e.quantity);
     setTotalPrice(e.productPrice * e.quantity);
-    // props.checkPrice(totalPrice);
+    props.checkPrice();
   };
 
   const incrementQuantity = () => {
@@ -38,12 +38,14 @@ function CartProduct(props) {
         cartProducts.splice(cartIndex, 1);
         window.location.reload(false);
       } else {
-        cartProducts.splice(cartIndex, 1, product);        
+        cartProducts.splice(cartIndex, 1, product);
       }
       localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
     }
-
     checkQuantityPrice(product);
+    if (cartProducts.length === 0) {
+      localStorage.removeItem("cartProducts");
+    }
   };
   const handleQuantityChange = (event) => {
     const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
@@ -56,6 +58,21 @@ function CartProduct(props) {
     }
     localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
     checkQuantityPrice(product);
+    if (cartProducts.length === 0) {
+      localStorage.removeItem("cartProducts");
+    }
+  };
+
+  const onDelete = () => {
+    const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
+    product.quantity = 0;
+    cartProducts.splice(cartIndex, 1);
+    window.location.reload(false);
+    localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+    checkQuantityPrice(product);
+    if (cartProducts.length === 0) {
+      localStorage.removeItem("cartProducts");
+    }
   };
 
   return (
@@ -109,7 +126,7 @@ function CartProduct(props) {
             <h6 className="my-0">x $ {product.productPrice}</h6>
           </div>
           <div className="col-3">
-            <button className="btn btn-outline-danger">
+            <button onClick={onDelete} className="btn btn-outline-danger">
               <i className="fa fa-trash" />
             </button>
           </div>
