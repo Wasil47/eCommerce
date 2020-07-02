@@ -143,12 +143,17 @@ function Add() {
             className="form-control-file"
             name="productImage"
             accept="image/*"
+            disabled
             // multiple
           />
         </div>
         <div className="form-group">
           {imagePreview.imagePreviewUrl ? (
-            <img className="imgPreview" src={imagePreview.imagePreviewUrl} />
+            <img
+              className="imgPreview"
+              src={imagePreview.imagePreviewUrl}
+              alt="imgPreview"
+            />
           ) : (
             <div className="previewText">
               Please select an Image for Preview

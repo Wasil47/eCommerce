@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import OrderDetails from "./OrderDetails/OrderDetails";
 
 function UserPanel(props) {
   const initialUser = {
@@ -10,6 +11,7 @@ function UserPanel(props) {
   };
   const [user, setUser] = useState(initialUser);
   useEffect(() => {
+    props.fetchUserOrders();
     setUser(props.userData);
   }, []);
 
@@ -54,6 +56,8 @@ function UserPanel(props) {
   return (
     <div className="col my-2">
       <h3 className="text-secondary">User panel:</h3>
+
+      {/* USER DATA */}
       <div className="card">
         <div className="card-header bg-secondary text-white">
           <h5 className="mr-auto">User details:</h5>
@@ -123,8 +127,51 @@ function UserPanel(props) {
           </form>
         </div>
         <div className="card-footer">
-          <button type="submit" form="update-user-form" className="btn btn-danger pull-right">
+          <button
+            type="submit"
+            form="update-user-form"
+            className="btn btn-danger pull-right"
+          >
             Change data
+          </button>
+        </div>
+      </div>
+
+      {/* ORDERS */}
+      <div className="card mt-2">
+        <div className="card-header bg-secondary text-white">
+          <h5 className="mr-auto">User orders:</h5>
+        </div>
+        <div className="card-body">
+          <div className="d-flex flex-column">
+            {/* Order: */}
+            <div className="row align-items-center">
+              <div className="col-4 col-lg-2">
+                <small>Number</small>
+              </div>
+              <div className="col-4 col-lg-5">
+                <small>Address</small>
+              </div>
+              <div className="col-4 col-lg-2">
+                <small>Total Price</small>
+              </div>
+            </div>
+            {props.userOrders.map((order) => (
+              <OrderDetails
+                order={order}
+                key={order.orderId}
+                // delete={orderDelete}
+              />
+            ))}
+            {/* Order End */}
+          </div>
+        </div>
+        <div className="card-footer">
+          <button
+            onClick={props.fetchUserOrders}
+            className="btn btn-primary pull-right"
+          >
+            Refresh
           </button>
         </div>
       </div>

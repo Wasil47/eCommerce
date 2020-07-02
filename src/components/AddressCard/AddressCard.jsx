@@ -38,12 +38,17 @@ function AddressCard(props) {
     }
   };
   const createNewOrder = () => {
-    const numberDate = Math.round(Date.now()/1000);
-    const orderData = {
+    const products = props.products; // array of products
+    const numberDate = Math.round(Date.now() / 1000);
+    const order = {
       orderNumber: numberDate,
       orderCustomerId: userData.customerId,
       orderAmount: props.totalPrice,
       orderAddress: userData.customerAddress,
+    };
+    const orderData = {
+      order: order,
+      products: products,
     };
     const rawData = JSON.stringify(orderData);
     const requestOptions = {

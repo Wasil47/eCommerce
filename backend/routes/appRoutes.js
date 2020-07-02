@@ -33,6 +33,10 @@ module.exports = (app) => {
   .post(User.loginByLoginPassword);
   app.route("/orders/create")
   .post(Order.createNewOrder);
+  app.route("/orders/:userId")
+  .get(Order.showUserOrders);
+  app.route("/orders/details/:orderId")
+  .get(Order.showOrderDetails);
   app.route("/admin/login")
   .post((req, res)=> {
     const admin = req.body;

@@ -15,7 +15,7 @@ function Admin() {
   return (
     <div className="container-xl">
       <h1>Hello Admin!</h1>
-      <AdminLogin logIn={logIn} />
+      {/* <AdminLogin logIn={logIn} /> */}
       <Add />
       <AdminProducts />
     </div>

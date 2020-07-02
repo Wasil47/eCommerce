@@ -1,7 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 function Navbar(props) {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const checkLoggedIn = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      const requestOptions = {
+        method: "GET",
+        headers: {
+          "x-access-token": user.accessToken,
+        },
+      };
+      fetch("http://localhost:4000/user/login", requestOptions)
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
+        })
+        .then((data) => {
+          if (data) {
+            setLoggedIn(true);
+          }
+        })
+        .catch((error) => console.log("frontend error", error));
+    }
+  };
+  useEffect(() => {
+    checkLoggedIn();
+  }, []);
   return (
     <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <NavLink className="navbar-brand" to="/">
@@ -34,7 +61,7 @@ function Navbar(props) {
         <ul className="navbar-nav">
           <li className="nav-item">
             <NavLink className="nav-link" to="/user">
-              Log In / Sing Up
+              {loggedIn ? "User Panel" : "Log In / Sing Up"}
             </NavLink>
           </li>
           <li className="nav-item">

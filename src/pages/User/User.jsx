@@ -16,6 +16,7 @@ function User(props) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(initialUser);
+  const [userOrders, setUserOrders] = useState([]);
   const logIn = (boolean) => {
     setLoggedIn(boolean);
     window.location.reload();
@@ -51,11 +52,36 @@ function User(props) {
     }
   };
   //
-  const logout = () => {
-    localStorage.removeItem("user");
+  const fetchUserOrders = () => {
+    if (loggedIn) {
+      const requestOptions = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      fetch(
+        "http://localhost:4000/orders/" + userData.customerId,
+        requestOptions
+      )
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
+        })
+        .then((data) => {
+          if (data) {
+            setUserOrders(data);
+          }
+        })
+        .catch((error) => console.log("frontend error", error));
+    }
   };
+  //
+
   useEffect(() => {
     checkLoggedIn();
+    fetchUserOrders();
   }, []);
 
   return (
@@ -67,14 +93,16 @@ function User(props) {
           </h1>
           <div className="row">
             {loggedIn ? (
-              <UserPanel logIn={loggedIn} userData={userData} />
+              <UserPanel
+                logIn={loggedIn}
+                userData={userData}
+                userOrders={userOrders}
+                fetchUserOrders={fetchUserOrders}
+              />
             ) : (
               <Fragment>
                 <Login logIn={logIn} />
                 <Register />
-                <button onClick={logout} className="btn btn-danger mt-2">
-                  Logout
-                </button>
               </Fragment>
             )}
           </div>
