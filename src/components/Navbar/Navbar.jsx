@@ -61,7 +61,12 @@ function Navbar(props) {
         <ul className="navbar-nav">
           <li className="nav-item">
             <NavLink className="nav-link" to="/user">
-              {loggedIn ? "User Panel" : "Log In / Sing Up"}
+              {/* {loggedIn ? "User Panel" : "Log In / Sing Up"} */}
+              <i
+                className="fa fa-user px-2"
+                aria-hidden="true"
+                style={{ fontSize: "1.3rem" }}
+              />
             </NavLink>
           </li>
           <li className="nav-item">

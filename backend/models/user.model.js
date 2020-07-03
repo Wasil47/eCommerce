@@ -9,7 +9,7 @@ const SELECT_USER_BY_NAME_LASTNAME =
 const CHECK_LOGIN_PASSWORD =
   "SELECT * FROM customers WHERE login = ? AND password = BINARY ?";
 const CHECK_LOGIN = "SELECT * FROM customers WHERE login = ?";
-const UPDATE_USER = "UPDATE customers SET ? WHERE login = ?"
+const UPDATE_USER = "UPDATE customers SET ? WHERE login = ?";
 
 // session and auth
 const jwtConfig = {

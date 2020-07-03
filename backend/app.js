@@ -18,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 // app.use(
 //   session({
 //     secret: process.env.SESSION_SECRET,
@@ -38,11 +39,6 @@ app.get("/", (req, res) => {
 
 const routes = require("./routes/appRoutes");
 routes(app);
-
-///
-const userRoutes = require("./routes/user.routes");
-app.use("/user", userRoutes);
-/////
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

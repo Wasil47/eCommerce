@@ -1,8 +1,11 @@
 const mysql = require("mysql");
-require("dotenv").config();
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 /* Set connect with SQL Database */
-const connection = mysql.createConnection({
+const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: process.env.SQL_PASSWORD,
@@ -11,4 +14,4 @@ const connection = mysql.createConnection({
 /* If connection throw an error, try this commend in ur database:
 ALTER USER '<user>'@'localhost' IDENTIFIED WITH mysql_native_password BY '<password>' */
 
-module.exports = connection;
+module.exports = db;
