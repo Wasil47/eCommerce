@@ -1,11 +1,10 @@
 const db = require("../config/db.config");
-
-const FIND_LOGIN = "SELECT * FROM customers WHERE login = ?";
+const c = db.userCommands;
 
 // check duplicate login
 module.exports = (req, res, next) => {
   const userLogin = req.body.login;
-  db.query(FIND_LOGIN, [userLogin], (err, results) => {
+  db.query(c.SELECT_USER_BY_LOGIN, [userLogin], (err, results) => {
     if (err) {
       console.log("mySQL error:", err);
       return res.status(400).send({

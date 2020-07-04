@@ -3,20 +3,27 @@ const jwtController = require("./auth.controller"); // .createToken
 const bcrypt = require("bcrypt");
 
 const saltRounds = 4;
-const tableName = "customers";
 
-const INSERT_INTO_USERS = `INSERT INTO ${tableName} SET ?`;
-const SELECT_USER_BY_LOGIN = `SELECT * FROM ${tableName} WHERE login = ?`;
-const UPDATE_USER = `UPDATE ${tableName} SET ? WHERE login = ?`;
+const c = db.userCommands;
+// const tableName = "customers";
+// const INSERT_INTO_USERS = `INSERT INTO ${tableName} SET ?`;
+// const SELECT_USER_BY_LOGIN = `SELECT * FROM ${tableName} WHERE login = ?`;
+// const UPDATE_USER = `UPDATE ${tableName} SET ? WHERE login = ?`;
 
-// old login (without bcrypt):
-const CHECK_LOGIN_PASSWORD = `SELECT * FROM ${tableName} WHERE login = ? AND password = BINARY ?`;
-
+const checkLoginPasswordProvided = (data, res) => {
+  if (!data.login || !data.password) {
+    console.log("No login and/or password provided!");
+    return res.status(403).send({
+      message: "No login and/or password provided!",
+    });
+  }
+};
 
 // CREATE (POST)
 // /register
 exports.singup = (req, res) => {
   const newUser = req.body;
+  checkLoginPasswordProvided(newUser, res);
   /* hash and salt password */
   bcrypt.hash(newUser.password, saltRounds, (err, hash) => {
     if (err) {
@@ -27,14 +34,13 @@ exports.singup = (req, res) => {
     } else {
       newUser.password = hash;
       /* create new user in mySQL DB */
-      db.query(INSERT_INTO_USERS, newUser, (err, results) => {
+      db.query(c.INSERT_INTO_USERS, newUser, (err, results) => {
         if (err) {
           console.log("mySQL error:", err);
           return res.status(400).send({
             message: "Backend/DB error",
           });
         }
-        // else {} ?
         console.log("New user created, id: " + results.insertId);
         res.status(201).send({
           message: "New user created, login: " + newUser.login,
@@ -46,7 +52,8 @@ exports.singup = (req, res) => {
 // /login
 exports.login = (req, res) => {
   const user = req.body;
-  db.query(SELECT_USER_BY_LOGIN, [user.login], (err, results) => {
+  checkLoginPasswordProvided(user, res);
+  db.query(c.SELECT_USER_BY_LOGIN, [user.login], (err, results) => {
     if (err) {
       console.log("mySQL error:", err);
       return res.status(400).send({
@@ -88,6 +95,7 @@ exports.login = (req, res) => {
 };
 
 // READ (GET)
+
 // UPDATE (PATCH)
 // /authorized
 exports.update = (req, res) => {
@@ -98,7 +106,7 @@ exports.update = (req, res) => {
       message: "No LOGIN provided!",
     });
   }
-  db.query(UPDATE_USER, [user, user.login], (err, results) => {
+  db.query(c.UPDATE_USER, [user, user.login], (err, results) => {
     if (err) {
       console.log("mySQL error:", err);
       return res.status(400).send({
@@ -111,6 +119,7 @@ exports.update = (req, res) => {
     });
   });
 };
+
 // DELETE (DELETE)
 // /authorized
 exports.delete = (req, res) => {
