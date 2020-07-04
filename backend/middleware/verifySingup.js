@@ -1,5 +1,6 @@
 const db = require("../config/db.config");
-const c = db.userCommands;
+const dbCommands = require("../config/dbCommands.config");
+const c = dbCommands.userCommands;
 
 // check duplicate login
 module.exports = (req, res, next) => {

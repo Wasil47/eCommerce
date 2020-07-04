@@ -11,23 +11,23 @@ const Order = require("../models/order.model");
 
 module.exports = (app) => {
   app.route("/products")
-  .get(Product.showAllProducts)
+  // .get(Product.showAllProducts)
   .post(Product.createProduct);
-  app.route("/products/noimage")
-  .post(Product.createProductNoImage);
-  app.route("/products/:id")
-  .get(Product.showProductById)
-  .patch(Product.updateProduct)
-  .delete(Product.deleteProduct);
+  // app.route("/products/noimage")
+  // .post(Product.createProductNoImage);
+  // app.route("/products/:id")
+  // .get(Product.showProductById)
+  // .patch(Product.updateProduct)
+  // .delete(Product.deleteProduct);
   app.route("/products-table")
   .get(Product.describeProductsTable);
   app.route("/user")
   .get(User.showUserByNameLastname);
-  app.route("/user/authorized")
-  .get(User.showUserByLogin)
-  .patch(User.updateUserData);  
-  app.route("/user/register")
-  .post(User.createUser);
+  // app.route("/user/authorized")
+  // .get(User.showUserByLogin);
+  // .patch(User.updateUserData);  
+  // app.route("/user/register")
+  // .post(User.createUser);
   app.route("/user/login")
   .get(User.checkToken)
   .post(User.loginByLoginPassword);

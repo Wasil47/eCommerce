@@ -1,13 +1,19 @@
-const express = require('express');
-const router = express.Router();
+const router = require("express").Router();
 
-router.get('/', (req,res)=>{
-  res.send('GET handler for /products route.');
-})
-router.post('/add', (req,res)=>{
-  res.send('POST handler for /products/add route.');
-})
+const ProductsController = require("../controllers/products.controller");
+const isAdmin = require("../middleware/verifyRole"); // todo, right now always next();
+
+router.route("/")
+.get(ProductsController.showAllProducts);
+// .post(ProductsController.createProduct);
+
+router.route("/noimage")
+.post(ProductsController.createProductNoImage);
+
+router.route("/:productId")
+.get(ProductsController.showProductById)
+.patch(isAdmin, ProductsController.updateProduct)
+.delete(isAdmin, ProductsController.deleteProduct);
 
 
-
-module.export = router;
+module.exports = router;

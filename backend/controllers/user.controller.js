@@ -1,20 +1,24 @@
 const db = require("../config/db.config");
 const jwtController = require("./auth.controller"); // .createToken
 const bcrypt = require("bcrypt");
+const dbCommands = require("../config/dbCommands.config");
+const c = dbCommands.userCommands;
 
 const saltRounds = 4;
-
-const c = db.userCommands;
-// const tableName = "customers";
-// const INSERT_INTO_USERS = `INSERT INTO ${tableName} SET ?`;
-// const SELECT_USER_BY_LOGIN = `SELECT * FROM ${tableName} WHERE login = ?`;
-// const UPDATE_USER = `UPDATE ${tableName} SET ? WHERE login = ?`;
 
 const checkLoginPasswordProvided = (data, res) => {
   if (!data.login || !data.password) {
     console.log("No login and/or password provided!");
     return res.status(403).send({
       message: "No login and/or password provided!",
+    });
+  }
+};
+const ifDbErr = (err, res) => {
+  if (err) {
+    console.log("mySQL error:", err);
+    return res.status(400).send({
+      message: "Backend/DB error",
     });
   }
 };
@@ -35,12 +39,7 @@ exports.singup = (req, res) => {
       newUser.password = hash;
       /* create new user in mySQL DB */
       db.query(c.INSERT_INTO_USERS, newUser, (err, results) => {
-        if (err) {
-          console.log("mySQL error:", err);
-          return res.status(400).send({
-            message: "Backend/DB error",
-          });
-        }
+        ifDbErr(err, res);
         console.log("New user created, id: " + results.insertId);
         res.status(201).send({
           message: "New user created, login: " + newUser.login,
@@ -54,12 +53,7 @@ exports.login = (req, res) => {
   const user = req.body;
   checkLoginPasswordProvided(user, res);
   db.query(c.SELECT_USER_BY_LOGIN, [user.login], (err, results) => {
-    if (err) {
-      console.log("mySQL error:", err);
-      return res.status(400).send({
-        message: "Backend/DB error",
-      });
-    }
+    ifDbErr(err, res);
     // looks for req login
     if (results.length < 1) {
       console.log("There is no such login: " + req.body.login);
@@ -95,7 +89,19 @@ exports.login = (req, res) => {
 };
 
 // READ (GET)
-
+exports.showUserDataByLogin = (req, res) => {
+  const user = req.body;
+  if (!user.login) {
+    console.log("No LOGIN provided!");
+    return res.status(403).send({
+      message: "No LOGIN provided!",
+    });
+  }
+  db.query(c.SELECT_USER_BY_LOGIN, [user.login], (err, results) => {
+    ifDbErr(err, res);
+    res.status(200).send(results);
+  });
+};
 // UPDATE (PATCH)
 // /authorized
 exports.update = (req, res) => {
@@ -107,12 +113,7 @@ exports.update = (req, res) => {
     });
   }
   db.query(c.UPDATE_USER, [user, user.login], (err, results) => {
-    if (err) {
-      console.log("mySQL error:", err);
-      return res.status(400).send({
-        message: "Backend/DB error",
-      });
-    }
+    ifDbErr(err, res);
     console.log("User updated, login: " + user.login, results.message);
     res.status(200).send({
       message: "User updated!",
