@@ -30,6 +30,7 @@ function Add() {
     });
   };
   const handleImageChange = (event) => {
+    handleChange(event);
     let reader = new FileReader();
     let file = event.target.files[0];
     reader.onload = () => {
@@ -41,51 +42,53 @@ function Add() {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("A form was submitted: ", newProduct);
-    const rawData = JSON.stringify(newProduct);
-    const requestOptions = {
-      method: "POST",
-      body: rawData,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    fetch("http://localhost:4000/products/noimage", requestOptions)
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.status === "success") {
-          console.log(response);
-          resetForm();
-        }
-      })
-      .catch((error) => console.log("error", error));
-  };
-
   // const handleSubmit = (event) => {
   //   event.preventDefault();
-  //   console.log(event.target);
-  //   // const fileName = event.target.productImage.files[0].name;
-
-  //   const formData = new FormData(event.target);
-  //   // formData.append('productImage', fileName)
+  //   console.log("A form was submitted: ", newProduct);
+  //   const rawData = JSON.stringify(newProduct);
   //   const requestOptions = {
   //     method: "POST",
-  //     body: formData,
+  //     body: rawData,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
   //   };
 
-  //   fetch("http://localhost:4000/products", requestOptions)
+  //   fetch("http://localhost:4000/products/noimage", requestOptions)
   //     .then((response) => response.json())
   //     .then((response) => {
-  //       console.log(response);
   //       if (response.status === "success") {
+  //         console.log(response);
   //         resetForm();
   //       }
   //     })
-  //     .catch((error) => console.log("frontend error", error));
+  //     .catch((error) => console.log("error", error));
   // };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(event.target);
+    console.log(event.target.productImage)
+    console.log(event.target.productImage.files[0])
+    // const fileName = event.target.productImage.files[0].name;
+
+    const formData = new FormData(event.target);
+    // formData.append('productImage', fileName)
+    const requestOptions = {
+      method: "POST",
+      body: formData,
+    };
+
+    fetch("http://localhost:4000/products", requestOptions)
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        if (response.status === "success") {
+          resetForm();
+        }
+      })
+      .catch((error) => console.log("frontend error", error));
+  };
 
   return (
     <div className="container">
@@ -143,7 +146,7 @@ function Add() {
             className="form-control-file"
             name="productImage"
             accept="image/*"
-            disabled
+            // disabled
             // multiple
           />
         </div>

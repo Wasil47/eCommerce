@@ -17,17 +17,19 @@ function Product(props) {
   return (
     <div className="col-md-6 col-lg-4 col-xl-3 mb-4">
       <div className="card h-100 product">
-        {/* <a href="#" className=""> */}
         <Link to={`/products/${p.productId}`}>
           <img
-            // src={p.productImage ? p.productImage : testImg}
-            src={testImg}
+            src={
+              p.productImage
+                ? `http://localhost:4000/${p.productImage}`
+                : testImg
+            }
+            // src={testImg}
             // src={require(`${p.productImage}`)}
             className="card-img-top"
             alt={p.productName}
           />
         </Link>
-        {/* </a> */}
         <div className="card-body d-flex flex-column">
           <Link
             to={`/products/${p.productId}`}

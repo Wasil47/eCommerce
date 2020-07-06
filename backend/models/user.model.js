@@ -1,3 +1,6 @@
+// old file, to delete or update with sequelize
+// old file, to delete or update with sequelize
+
 const db = require("../config/db.config");
 const jwt = require("jsonwebtoken");
 

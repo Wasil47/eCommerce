@@ -4,7 +4,7 @@ const db = require("./config/db.config");
 
 const userRoutes = require("./routes/user.routes");
 const productsRoutes = require("./routes/products.routes");
-// const ordersRoutes = require("./routes/orders.routes");
+const ordersRoutes = require("./routes/orders.routes");
 
 const app = express();
 
@@ -28,11 +28,12 @@ app.get("/", (req, res) => {
 // Routes which should handle requests
 app.use("/user", userRoutes);
 app.use("/products", productsRoutes);
-// app.use("/orders", ordersRoutes);
+app.use("/orders", ordersRoutes);
 
-// to delete soon
-const routes = require("./routes/appRoutes");
-routes(app);
+
+// fix login (frontend) then: delete
+// const routes = require("./routes/appRoutes");
+// routes(app);
 /// end of delete section
 
 module.exports = app;

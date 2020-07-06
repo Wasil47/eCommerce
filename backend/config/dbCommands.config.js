@@ -1,5 +1,17 @@
 const userTableName = "customers";
 const productsTableName = "products";
+const ordersTableName = "orders";
+const orderDetailsTableName = "orderdetails";
+
+// if db err (e.g. wrong mySQL command)
+const ifDbErr = (err, res) => {
+  if (err) {
+    console.log("mySQL error:", err);
+    return res.status(400).send({
+      message: "Backend/DB error",
+    });
+  }
+};
 
 // reusable mySQL commands:
 const userCommands = {
@@ -14,9 +26,18 @@ const productsCommands = {
   UPDATE_PRODUCT: `UPDATE ${productsTableName} SET ? WHERE productId = `,
   DELETE_FROM_PRODUCTS_ID: `DELETE FROM ${productsTableName} WHERE productId = `,
 };
+const ordersCommands = {
+  INSERT_INTO_ORDERS: `INSERT INTO ${ordersTableName} SET ?`,
+  SELECT_ORDERS_BY_USER_ID: `SELECT * FROM ${ordersTableName} WHERE orderCustomerId = `,
+  INSERT_INTO_ORDER_DETAILS: `INSERT INTO ${orderDetailsTableName} SET ?`,
+  SELECT_ORDER_DETAILS_BY_ORDER_ID: `SELECT * FROM ${orderDetailsTableName} WHERE detailOrderId = `,
+};
 
 const dbCommands = {
+  ifDbErr: ifDbErr,
   userCommands: userCommands,
-  productsCommands: productsCommands  
-}
+  productsCommands: productsCommands,
+  ordersCommands: ordersCommands,
+};
+
 module.exports = dbCommands;

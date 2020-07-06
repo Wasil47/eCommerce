@@ -1,28 +1,41 @@
 const db = require("../config/db.config");
 const dbCommands = require("../config/dbCommands.config");
 const c = dbCommands.productsCommands;
+const ifDbErr = dbCommands.ifDbErr;
 
-const ifDbErr = (err, res) => {
-  if (err) {
-    console.log("mySQL error:", err);
-    return res.status(400).send({
-      message: "Backend/DB error",
-    });
-  }
-};
 
 // CREATE (POST)
 // /
-exports.createProduct = (req, res) => {};
+exports.createProduct = (req, res) => {
+  const newProduct = req.body;
+  if (req.file) {
+    newProduct.productImage = req.file.path;
+  } else {
+    // wrong file-type or no file at all
+    newProduct.productImage = null;
+  }
+  db.query(c.INSERT_INTO_PRODUCTS, newProduct, (error, results) => {
+    ifDbErr(error, res);
+    if (results) {
+      console.log("New product created, id: " + results.insertId);
+      res.status(201).send({
+        message: "New product created, name: " + newProduct.productName,
+      });
+    }
+  });
+};
+
 // /noimage
 exports.createProductNoImage = (req, res) => {
   const newProduct = req.body;
   db.query(c.INSERT_INTO_PRODUCTS, newProduct, (err, results) => {
     ifDbErr(err, res);
-    console.log("New product created, id: " + results.insertId);
-    res.status(201).send({
-      message: "New product created, name: " + newProduct.productName,
-    });
+    if (results) {
+      console.log("New product created, id: " + results.insertId);
+      res.status(201).send({
+        message: "New product created, name: " + newProduct.productName,
+      });
+    }
   });
 };
 

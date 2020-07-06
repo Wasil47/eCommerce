@@ -3,6 +3,7 @@ const jwtController = require("./auth.controller"); // .createToken
 const bcrypt = require("bcrypt");
 const dbCommands = require("../config/dbCommands.config");
 const c = dbCommands.userCommands;
+const ifDbErr = dbCommands.ifDbErr;
 
 const saltRounds = 4;
 
@@ -11,14 +12,6 @@ const checkLoginPasswordProvided = (data, res) => {
     console.log("No login and/or password provided!");
     return res.status(403).send({
       message: "No login and/or password provided!",
-    });
-  }
-};
-const ifDbErr = (err, res) => {
-  if (err) {
-    console.log("mySQL error:", err);
-    return res.status(400).send({
-      message: "Backend/DB error",
     });
   }
 };
@@ -40,10 +33,12 @@ exports.singup = (req, res) => {
       /* create new user in mySQL DB */
       db.query(c.INSERT_INTO_USERS, newUser, (err, results) => {
         ifDbErr(err, res);
-        console.log("New user created, id: " + results.insertId);
-        res.status(201).send({
-          message: "New user created, login: " + newUser.login,
-        });
+        if (results) {
+          console.log("New user created, id: " + results.insertId);
+          res.status(201).send({
+            message: "New user created, login: " + newUser.login,
+          });
+        }
       });
     }
   });
@@ -89,6 +84,9 @@ exports.login = (req, res) => {
 };
 
 // READ (GET)
+// /
+
+// /authorized
 exports.showUserDataByLogin = (req, res) => {
   const user = req.body;
   if (!user.login) {
@@ -99,9 +97,12 @@ exports.showUserDataByLogin = (req, res) => {
   }
   db.query(c.SELECT_USER_BY_LOGIN, [user.login], (err, results) => {
     ifDbErr(err, res);
-    res.status(200).send(results);
+    if (results) {
+      res.status(200).send(results);
+    }
   });
 };
+
 // UPDATE (PATCH)
 // /authorized
 exports.update = (req, res) => {
@@ -114,10 +115,12 @@ exports.update = (req, res) => {
   }
   db.query(c.UPDATE_USER, [user, user.login], (err, results) => {
     ifDbErr(err, res);
-    console.log("User updated, login: " + user.login, results.message);
-    res.status(200).send({
-      message: "User updated!",
-    });
+    if (results) {
+      console.log("User updated, login: " + user.login, results.message);
+      res.status(200).send({
+        message: "User updated!",
+      });
+    }
   });
 };
 

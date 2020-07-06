@@ -1,3 +1,6 @@
+// old file, to delete or update with sequelize
+// old file, to delete or update with sequelize
+
 const db = require("../config/db.config");
 
 const INSERT_INTO_ORDERS = "INSERT INTO orders SET ?";
