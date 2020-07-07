@@ -32,9 +32,12 @@ module.exports = (app) => {
   // .patch(User.updateUserData);  
   // app.route("/user/register")
   // .post(User.createUser);
-  app.route("/user/login")
-  .get(User.checkToken)
-  .post(User.loginByLoginPassword);
+
+  // app.route("/user/login")
+  // .get(User.checkToken)
+  // .post(User.loginByLoginPassword);
+
+
   // app.route("/orders/create")
   // .post(Order.createNewOrder);
   // app.route("/orders/:userId")

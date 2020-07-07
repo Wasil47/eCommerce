@@ -9,10 +9,10 @@ const saltRounds = 4;
 
 const checkLoginPasswordProvided = (data, res) => {
   if (!data.login || !data.password) {
-    console.log("No login and/or password provided!");
-    return res.status(403).send({
+    res.status(403).send({
       message: "No login and/or password provided!",
     });
+    throw console.log("No login and/or password provided!");
   }
 };
 
@@ -88,7 +88,7 @@ exports.login = (req, res) => {
 
 // /authorized
 exports.showUserDataByLogin = (req, res) => {
-  const user = req.body;
+  const user = req.userData; // test it.
   if (!user.login) {
     console.log("No LOGIN provided!");
     return res.status(403).send({

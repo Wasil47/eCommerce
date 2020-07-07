@@ -5,10 +5,10 @@ const ifDbErr = dbCommands.ifDbErr;
 
 const checkOrderProductsProvided = (data, res) => {
   if (!data.order || !data.products) {
-    console.log("No order and/or products provided!");
-    return res.status(403).send({
+    res.status(403).send({
       message: "No order and/or products provided!",
     });
+    throw console.log("No order and/or products provided!");
   }
 };
 

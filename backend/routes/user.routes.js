@@ -7,7 +7,7 @@ const verifySingup = require("../middleware/verifySingup");
 
 router.route("/register")
 .post(verifySingup, UserController.singup);
-router.route("/login-new")
+router.route("/login")
 .post(UserController.login);
 router.route("/authorized")
 .get(authJwt, UserController.showUserDataByLogin)

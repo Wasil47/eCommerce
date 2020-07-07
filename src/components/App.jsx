@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import Navbar from "./Navbar/Navbar";
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
-import Home from "../pages/Home/Home";
+// import Home from "../pages/Home/Home";
 import Admin from "../pages/Admin/Admin";
 import Products from "../pages/Products/Products";
 import Cart from "../pages/Cart/Cart";
