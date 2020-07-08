@@ -3,15 +3,16 @@ import "./Product.css";
 import testImg from "./testProduct.jpg";
 import { Link } from "react-router-dom";
 
+import * as server from "../../../services/server.constants";
+
 function Product(props) {
   const p = props.product;
-  const onDelete = () => {
-    props.delete(p.productId);
-  };
+  // const onDelete = () => {
+  //   props.delete(p.productId);
+  // };
+
   const addToCart = () => {
     props.toCart(p);
-    console.log("click!");
-    // console.log(p);
   };
 
   return (
@@ -20,12 +21,9 @@ function Product(props) {
         <Link to={`/products/${p.productId}`}>
           <img
             src={
-              p.productImage
-                ? `http://localhost:4000/${p.productImage}`
-                : testImg
+              p.productImage ? `${server.API_URL}/${p.productImage}` : testImg
             }
             // src={testImg}
-            // src={require(`${p.productImage}`)}
             className="card-img-top"
             alt={p.productName}
           />

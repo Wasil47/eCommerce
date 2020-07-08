@@ -3,7 +3,6 @@ const dbCommands = require("../config/dbCommands.config");
 const c = dbCommands.productsCommands;
 const ifDbErr = dbCommands.ifDbErr;
 
-
 // CREATE (POST)
 // /
 exports.createProduct = (req, res) => {
@@ -65,14 +64,14 @@ exports.showProductById = (req, res) => {
 // UPDATE (PATCH)
 // /:productId
 exports.updateProduct = (req, res) => {
-  const productId = req.params.id;
+  const productId = req.params.productId;
   const updatedProduct = req.body;
   db.query(c.UPDATE_PRODUCT + productId, updatedProduct, (err, results) => {
     ifDbErr(err, res);
     if (results) {
       console.log("Product updated, id: " + productId, results.message);
       res.status(200).send({
-        message: "Product updated!",
+        message: "Product updated! id: " + productId,
       });
     }
   });
@@ -81,13 +80,13 @@ exports.updateProduct = (req, res) => {
 // DELETE (DELETE)
 // /:productId
 exports.deleteProduct = (req, res) => {
-  const productId = req.params.id;
+  const productId = req.params.productId;
   db.query(c.DELETE_FROM_PRODUCTS_ID + productId, (err, results) => {
     ifDbErr(err, res);
     if (results) {
-      console.log("Product deleted: " + results.affectedRows);
+      console.log("Products deleted, affectedRows: " + results.affectedRows);
       res.status(200).send({
-        message: "Product deleted!",
+        message: "Product deleted! id: " + productId,
       });
     }
   });

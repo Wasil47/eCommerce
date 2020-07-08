@@ -5,27 +5,15 @@ import AddressCard from "../../components/AddressCard/AddressCard";
 
 function Cart() {
   const [showShipping, setShowShipping] = useState(true);
-  // const [showFinalize, setFinalize] = useState(false);
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  // const handleClick2 = () => {
-  //   console.log("pay");
-  // };
   const fetchCartProducts = () => {
     const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
     setProducts(cartProducts);
-    // let price = 0;
-    // cartProducts.forEach((p) => {
-    //   return (price = price + p.quantity * p.productPrice);
-    // });
-    // setTotalPrice(Math.round(price * 100) / 100);
   };
   const showAddress = () => {
     setShowShipping(!showShipping);
-    // setFinalize(!showFinalize);
-    // setShowShipping(true);
-    // setFinalize(true);
     fetchCartProducts();
   };
   const setPrice = (price) => {
@@ -44,14 +32,6 @@ function Cart() {
       {showShipping && (
         <AddressCard products={products} totalPrice={totalPrice} />
       )}
-
-      {/* <button
-        onClick={handleClick2}
-        className="btn btn-success my-3 ml-auto"
-        disabled={!showFinalize}
-      >
-        Finalize Order
-      </button> */}
     </div>
   );
 }

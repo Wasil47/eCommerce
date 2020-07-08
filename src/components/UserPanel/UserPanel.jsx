@@ -1,37 +1,53 @@
 import React, { useState, useEffect } from "react";
 import OrderDetails from "./OrderDetails/OrderDetails";
+import { useSelector, useDispatch } from "react-redux";
+import { userService } from "../../services/user.service";
+import { authActions, userActions } from "../../actions";
 
 function UserPanel(props) {
-  const initialUser = {
-    customerName: "",
-    customerLastname: "",
-    customerAddress: "",
-    login: "",
-    password: "",
+  const userData = useSelector((state) => state.userReducer);
+  const [user, setUser] = useState(userData);
+  const [userOrders, setUserOrders] = useState([]);
+
+  const dispatch = useDispatch();
+
+  const fetchUserData = () => {
+    userService.getUserData().then(
+      (data) => {
+        if (data) {
+          dispatch(userActions.getUserDataSuccess(data));
+          setUser(data);
+          fetchUserOrders(data.customerId);
+        }
+      },
+      (error) => {
+        dispatch(authActions.authFail(error));
+        dispatch(userActions.getUserDataFail());
+      }
+    );
   };
-  const [user, setUser] = useState(initialUser);
-  useEffect(() => {
-    props.fetchUserOrders();
-    setUser(props.userData);
-  }, []);
+
+  const fetchUserOrders = (userId) => {
+    // userData.customerId
+    userService.getUserOrders(userId).then((data) => {
+      if (data) {
+        setUserOrders(data);
+      }
+    });
+  };
 
   const updateUserData = () => {
-    const rawData = JSON.stringify(user);
-    const requestOptions = {
-      method: "PATCH",
-      body: rawData,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    fetch("http://localhost:4000/user/authorized", requestOptions)
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
+    userService.updateUserData(user).then(
+      (data) => {
+        if (data) {
+          console.log(data.message);
         }
-      })
-      .then((data) => console.log(data.message))
-      .catch((error) => console.log("frontend error", error));
+      },
+      (error) => {
+        console.log(error);
+        dispatch(authActions.authFail(error));
+      }
+    );
   };
 
   const handleChange = (event) => {
@@ -49,9 +65,14 @@ function UserPanel(props) {
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
+    userService.logout();
+    // localStorage.removeItem("user");
     window.location.reload();
   };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   return (
     <div className="col my-2">
@@ -156,7 +177,8 @@ function UserPanel(props) {
                 <small>Total Price</small>
               </div>
             </div>
-            {props.userOrders.map((order) => (
+            {/* {props.userOrders.map((order) => ( */}
+            {userOrders.map((order) => (
               <OrderDetails
                 order={order}
                 key={order.orderId}

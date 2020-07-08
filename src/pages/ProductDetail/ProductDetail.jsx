@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import testImg from "../../components/Products/Product/testProduct.jpg";
+import { cartService } from "../../services/cart.service";
+
+import * as server from "../../services/server.constants";
 
 function ProductDetail() {
   const { id } = useParams();
@@ -13,10 +16,10 @@ function ProductDetail() {
   });
 
   const productFetch = () => {
-    fetch("http://localhost:4000/products/" + id)
+    fetch(`${server.API_URL}/products/` + id)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setProduct(data);
       })
       .catch((err) => {
@@ -26,31 +29,14 @@ function ProductDetail() {
         });
       });
   };
+
+  const addToCart = () => {
+    cartService.addProductToCart(product);
+    console.log("Add to Cart: " + product.productName);
+  };
   useEffect(() => {
     productFetch();
   }, []);
-
-  const addToCart = () => {
-    const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
-    console.log(product);
-    const findDuplicate = () => {
-      return cartProducts.findIndex((p) => p.productId === product.productId);
-    };
-    const duplicateIndex = findDuplicate();
-    const findProduct = () => {
-      return cartProducts.find((p) => p.productId === product.productId);
-    };
-    const foundProduct = findProduct();
-    if (duplicateIndex === -1) {
-      product.quantity = 1;
-      cartProducts.push(product);
-    } else {
-      product.quantity = foundProduct.quantity + 1;
-      cartProducts.splice(duplicateIndex, 1, product);
-    }
-    localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
-    console.log(cartProducts);
-  };
   return (
     <div className="row border rounded">
       <div className="col-md-5">

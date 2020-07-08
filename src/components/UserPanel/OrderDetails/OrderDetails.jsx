@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { userService } from "../../../services/user.service";
 
 function OrderDetails(props) {
   const order = props.order;
@@ -7,24 +8,11 @@ function OrderDetails(props) {
   const [orderDetails, setOrderDetails] = useState([]);
 
   const fetchOrderDetails = () => {
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    fetch("http://localhost:4000/orders/details/" + id, requestOptions)
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        if (data) {
-          setOrderDetails(data);
-        }
-      })
-      .catch((error) => console.log("frontend error", error));
+    userService.getOrderDetails(id).then((data) => {
+      if (data) {
+        setOrderDetails(data);
+      }
+    });
   };
 
   useEffect(() => {
@@ -50,7 +38,9 @@ function OrderDetails(props) {
         </button>
       </div>
       <div className="col-4 col-lg-1 my-1">
-        <button className="btn btn-danger btn-block px-0">Delete</button>
+        <button className="btn btn-danger btn-block px-0" disabled>
+          Delete
+        </button>
       </div>
       <div className="col-12 collapse my-1 px-0" id={"collapse" + id}>
         <div className="row align-items-center mb-1">

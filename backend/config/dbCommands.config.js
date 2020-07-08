@@ -6,10 +6,11 @@ const orderDetailsTableName = "orderdetails";
 // if db err (e.g. wrong mySQL command)
 const ifDbErr = (err, res) => {
   if (err) {
-    console.log("mySQL error:", err);
-    return res.status(400).send({
+    res.status(400).send({
       message: "Backend/DB error",
     });
+    console.log("mySQL error:", err);
+    throw err;
   }
 };
 

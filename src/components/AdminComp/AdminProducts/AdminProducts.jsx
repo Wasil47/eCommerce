@@ -1,45 +1,28 @@
 import React, { useEffect, useState } from "react";
 import AdminProduct from "./AdminProduct/AdminProduct";
+import { productService } from "../../../services/product.service";
 
 function AdminProducts() {
   const [products, setProducts] = useState([]);
-  const keys = ["Id", "Name", "Price", "Stock", "Image", "Description"];
 
   const productsFetch = () => {
-    fetch("http://localhost:4000/products")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setProducts(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    productService.getAllProducts().then((data) => {
+      setProducts(data);
+    });
+  };
+
+  const productDelete = (id) => {
+    console.log(id);
+    productService.deleteProduct(id).then((response) => {
+      console.log(response.message);
+      productsFetch();
+    });
   };
 
   useEffect(() => {
     productsFetch();
   }, []);
 
-  const productDelete = (id) => {
-    console.log(id);
-    const requestOptions = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    fetch("http://localhost:4000/products/" + id, requestOptions)
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.status === "success") {
-          console.log(response);
-          productsFetch();
-        }
-      })
-      .catch((error) => console.log("error", error));
-  };
   return (
     <div className="container px-0 mt-4">
       <div className="col">

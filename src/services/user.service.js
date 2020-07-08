@@ -11,13 +11,12 @@ const login = (login, password) => {
       "Content-Type": "application/json",
     },
   };
-  // return ?
-  fetch(`${server.API_URL}/user/login`, requestOptions)
+  return fetch(`${server.API_URL}/user/login`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
+    .then((user) => {
       // store jwt (login, token) in local storage
-      localStorage.setItem("user", JSON.stringify(data));
-      return data;
+      localStorage.setItem("user", JSON.stringify(user));
+      return user;
     })
     .catch((error) => console.log("frontend error", error));
 };
@@ -32,11 +31,29 @@ const getUserData = () => {
     method: "GET",
     headers: authHeader(),
   };
-  // return?
-  fetch(`${server.API_URL}/user/authorized`, requestOptions)
+
+  return fetch(`${server.API_URL}/user/authorized`, requestOptions)
     .then(handleResponse)
     .then((userData) => {
-      return userData;
+      return userData[0];
+    })
+    .catch((error) => console.log("frontend error", error));
+};
+
+const updateUserData = (user) => {
+  const rawData = JSON.stringify(user);
+  const multiHeader = new Headers(authHeader());
+  multiHeader.append("Content-Type", "application/json");
+
+  const requestOptions = {
+    method: "PATCH",
+    body: rawData,
+    headers: multiHeader,
+  };
+  return fetch(`${server.API_URL}/user/authorized`, requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+      return data;
     })
     .catch((error) => console.log("frontend error", error));
 };
@@ -46,13 +63,15 @@ const getUserOrders = (userId) => {
     method: "GET",
     headers: authHeader(),
   };
-  // return?
-  fetch(`${server.API_URL}/orders/${userId}`, requestOptions)
+
+  return fetch(`${server.API_URL}/orders/${userId}`, requestOptions)
     .then(handleResponse)
     .then((orders) => {
       return orders;
     })
-    .catch((error) => console.log("frontend error", error));
+    .catch((error) => {
+      console.log("frontend error", error);
+    });
 };
 
 const getOrderDetails = (orderId) => {
@@ -60,7 +79,7 @@ const getOrderDetails = (orderId) => {
     method: "GET",
     headers: authHeader(),
   };
-  fetch(`${server.API_URL}/orders/details/${orderId}`, requestOptions)
+  return fetch(`${server.API_URL}/orders/details/${orderId}`, requestOptions)
     .then(handleResponse)
     .then((orderDetails) => {
       return orderDetails;
@@ -68,9 +87,47 @@ const getOrderDetails = (orderId) => {
     .catch((error) => console.log("frontend error", error));
 };
 
+const auth = () => {
+  const requestOptions = {
+    method: "GET",
+    headers: authHeader(),
+  };
+  return fetch(`${server.API_URL}/user/auth`, requestOptions)
+    .then((response) => {
+      if (response.ok) {
+        return true;
+      } else {
+        return false;
+      }
+    })
+    .catch((error) => console.log("frontend error", error));
+};
+// WHICH BETTER?:
+// const auth = async () => {
+//   const requestOptions = {
+//     method: "GET",
+//     headers: authHeader(),
+//   };
+//   try {
+//     const response = await fetch(`${server.API_URL}/user/auth`, requestOptions);
+//     if (response.ok) {
+//       return true;
+//     }
+//     else {
+//       return false;
+//     }
+//   }
+//   catch (error) {
+//     return console.log("frontend error", error);
+//   }
+// };
+
 export const userService = {
   login,
   logout,
   getUserData,
   getUserOrders,
+  getOrderDetails,
+  updateUserData,
+  auth,
 };

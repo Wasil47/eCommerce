@@ -1,12 +1,18 @@
 import React, { useState } from "react";
+import { userService } from "../../services/user.service";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../actions";
 
-function Login(props) {
+function Login() {
   const initialUser = {
     login: "test",
     password: "test",
   };
   const [user, setUser] = useState(initialUser);
   const [fail, setFail] = useState(false);
+
+  const dispatch = useDispatch();
+
   const handleChange = (event) => {
     const key = event.target.name,
       value = event.target.value;
@@ -15,39 +21,27 @@ function Login(props) {
       [key]: value,
     });
   };
-  const checkLoginPassword = () => {
-    // const formData = new FormData(event.target);
-    const rawData = JSON.stringify(user);
-    const requestOptions = {
-      method: "POST",
-      body: rawData,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    fetch("http://localhost:4000/user/login", requestOptions)
-      .then((response) => response.json()) // todo: if status==200 ->json
-      .then((response) => {
-        // console.log(response);
-        // console.log(response.status);
-        if (response.message === "Success Login") {
+
+  const login = () => {
+    userService.login(user.login, user.password).then(
+      (data) => {
+        if (data) {
           setFail(false);
-          /* TEST LOGIN  */
-          props.logIn(true);
-          if (response.accessToken) {
-            localStorage.setItem("user", JSON.stringify(response));
-          }
-          
-          /* TEST LOGIN END */
-        } else if (response.status === "Wrong login or password") {
+          dispatch(authActions.authSuccess(data));
+        } else {
           setFail(true);
         }
-      })
-      .catch((error) => console.log("frontend error", error));
+      },
+      (error) => {
+        dispatch(authActions.authFail(error));
+      }
+    );
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    checkLoginPassword();
+    login();
+    // window.location.reload(false);
   };
   return (
     <div className="col-md-6 my-2">
@@ -60,7 +54,7 @@ function Login(props) {
             onChange={handleChange}
             type="text"
             name="login"
-            className="form-control"
+            className={"form-control" + (!user.login ? " is-invalid" : "")}
             required
           />
           <small className="form-text text-muted">login: test</small>
@@ -72,7 +66,7 @@ function Login(props) {
             onChange={handleChange}
             type="password"
             name="password"
-            className="form-control"
+            className={"form-control" + (!user.password ? " is-invalid" : "")}
             required
           />
           <small className="form-text text-muted">password: test</small>

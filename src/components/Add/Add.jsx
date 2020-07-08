@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Add.css";
+import { productService } from "../../services/product.service";
 
 function Add() {
   const initialnewProduct = {
@@ -42,52 +43,12 @@ function Add() {
     reader.readAsDataURL(file);
   };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   console.log("A form was submitted: ", newProduct);
-  //   const rawData = JSON.stringify(newProduct);
-  //   const requestOptions = {
-  //     method: "POST",
-  //     body: rawData,
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   };
-
-  //   fetch("http://localhost:4000/products/noimage", requestOptions)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       if (response.status === "success") {
-  //         console.log(response);
-  //         resetForm();
-  //       }
-  //     })
-  //     .catch((error) => console.log("error", error));
-  // };
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event.target);
-    console.log(event.target.productImage)
-    console.log(event.target.productImage.files[0])
-    // const fileName = event.target.productImage.files[0].name;
-
-    const formData = new FormData(event.target);
-    // formData.append('productImage', fileName)
-    const requestOptions = {
-      method: "POST",
-      body: formData,
-    };
-
-    fetch("http://localhost:4000/products", requestOptions)
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-        if (response.status === "success") {
-          resetForm();
-        }
-      })
-      .catch((error) => console.log("frontend error", error));
+    productService.createNewProduct(event.target).then((data) => {
+      console.log(data.message);
+      resetForm();
+    });
   };
 
   return (
@@ -164,19 +125,6 @@ function Add() {
           )}
         </div>
         <button className="btn btn-secondary">Submit</button>
-
-        {/* {Object.keys(newProduct).map((key, index)=> (
-        <div className="form-group" key={index}>
-          <label htmlFor={key}>{key}</label>
-          <input
-            value={newProduct[key]}
-            onChange={handleChange}
-            type={ isNaN(newProduct[key]) ? "number" : "text"}
-            className="form-control"
-            name={key}
-          />
-        </div>
-      ))} */}
       </form>
     </div>
   );

@@ -1,42 +1,54 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { cartService } from "../../services/cart.service";
+import { userService } from "../../services/user.service";
+import { authActions, userActions } from "../../actions";
 
 function AddressCard(props) {
-  // const [showFinalize, setFinalize] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({
-    customerName: "",
-    customerLastname: "",
-    customerAddress: "",
-  });
-  const checkLoggedIn = () => {
+  const user = useSelector((state) => state.userReducer);  
+  const loggedIn = useSelector((state) => state.authReducer.loggedIn);
+  const [userData, setUserData] = useState(user);
+
+  const dispatch = useDispatch();
+
+  // check token is valid and user is login
+  const auth = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      const requestOptions = {
-        method: "GET",
-        headers: {
-          "x-access-token": user.accessToken,
-        },
-      };
-      fetch("http://localhost:4000/user/login", requestOptions)
-        .then((response) => {
-          if (response.status === 200) {
-            // setFinalize(true);
-            return response.json();
-          }
-        })
-        .then((data) => {
-          if (data) {
-            setUserData(data);
-            setLoggedIn(true);
-          }
-          // setLoading(false);
-        })
-        .catch((error) => console.log("frontend error", error));
+    if (user && user.token) {
+      userService.auth().then((data) => {
+        if (!data) {
+          dispatch(authActions.authFail(data.message));
+          dispatch(userActions.getUserDataFail());
+          console.log("authorized:", data);
+          userService.logout();
+        }
+        if (data) {
+          dispatch(authActions.authSuccess());
+          console.log("authorized:", data);
+          fetchUserData();
+        }
+      });
     } else {
-      // setLoading(false);
+      dispatch(authActions.authFail("No Token!"));
     }
   };
+
+  const fetchUserData = () => {
+    userService.getUserData().then(
+      (data) => {
+        if (data) {
+          dispatch(userActions.getUserDataSuccess(data));
+          setUserData(data);
+        }
+      },
+      (error) => {
+        dispatch(authActions.authFail(error));
+        dispatch(userActions.getUserDataFail());
+      }
+    );
+  };
+
   const createNewOrder = () => {
     const products = props.products; // array of products
     const numberDate = Math.round(Date.now() / 1000);
@@ -50,36 +62,12 @@ function AddressCard(props) {
       order: order,
       products: products,
     };
-    const rawData = JSON.stringify(orderData);
-    const requestOptions = {
-      method: "POST",
-      body: rawData,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    fetch("http://localhost:4000/orders/create", requestOptions)
-      .then((response) => {
-        console.log(response.status);
-        if (response.status === 200) {
-          localStorage.removeItem("cartProducts");
-          window.location.reload(false);
-          return response.json();
-        }
-      })
-      .then((data) => {
-        console.log(data);
-        if (data) {
-          // localStorage.removeItem("cartProducts");
-        }
-        // setLoading(false);
-      })
-      .catch((error) => console.log("frontend error", error));
-  };
 
-  useEffect(() => {
-    checkLoggedIn();
-  }, []);
+    cartService.createNewOrder(orderData).then((data) => {
+      console.log(data.message);
+      window.location.reload(false);
+    });
+  };
 
   const handleChange = (event) => {
     const key = event.target.name,
@@ -89,6 +77,11 @@ function AddressCard(props) {
       [key]: value,
     });
   };
+
+  useEffect(() => {
+    auth();
+    // fetchUserData();
+  }, []);
   return (
     <Fragment>
       <div className="card">
@@ -198,6 +191,15 @@ function AddressCard(props) {
         </div>
       </div>
       <div className="my-3 ml-auto d-flex flex-row">
+        {props.products.length === 0 && (
+          <Link
+            to={`/products`}
+            style={{ color: "#f75050", textDecoration: "none" }}
+            className="form-text text-danger mx-2"
+          >
+            <small className="align-middle">Add product to Cart</small>
+          </Link>
+        )}
         {!loggedIn && (
           <Link
             to={`/user/`}
@@ -207,10 +209,11 @@ function AddressCard(props) {
             <small className="align-middle">Login to continue</small>
           </Link>
         )}
+
         <button
           onClick={createNewOrder}
           className="btn btn-success"
-          disabled={!loggedIn}
+          disabled={!loggedIn || props.products.length === 0}
         >
           Finalize Order
         </button>

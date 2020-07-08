@@ -57,7 +57,6 @@ exports.showUserOrders = (req, res) => {
   db.query(c.SELECT_ORDERS_BY_USER_ID + userId, (err, results) => {
     ifDbErr(err, res);
     if (results) {
-      console.log(results);
       res.status(200).send(results);
     }
   });
@@ -69,7 +68,6 @@ exports.showOrderDetails = (req, res) => {
   db.query(c.SELECT_ORDER_DETAILS_BY_ORDER_ID + orderId, (err, results) => {
     ifDbErr(err, res);
     if (results) {
-      console.log(results);
       res.status(200).send(results);
     }
   });

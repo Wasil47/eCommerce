@@ -6,10 +6,10 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (authData) => {
+export const authSuccess = (user) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
-    authData: authData,
+    user: user,
   };
 };
 
@@ -20,9 +20,15 @@ export const authFail = (error) => {
   };
 };
 
-export const auth = (login, password) => {
-  return (dispach) => {
-    // auth user
-    dispach(authStart()); // test
+export const logout = () => {
+  return {
+    type: actionTypes.LOGOUT,
   };
+};
+
+export const authActions = {
+  authStart,
+  authSuccess,
+  authFail,
+  logout,
 };

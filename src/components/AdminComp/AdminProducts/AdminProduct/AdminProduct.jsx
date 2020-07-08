@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import testImg from "../../../Products/Product/testProduct.jpg";
+import { productService } from "../../../../services/product.service";
+
+import * as server from "../../../../services/server.constants";
 
 function AdminProduct(props) {
   const p = props.product;
@@ -10,7 +13,6 @@ function AdminProduct(props) {
   const [editVisible, setEditVisible] = useState(false);
 
   const onEdit = () => {
-    console.log("click!");
     console.log(p.productId);
     setEditVisible(!editVisible);
   };
@@ -27,35 +29,26 @@ function AdminProduct(props) {
     });
   };
 
+  // edit product
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log("A form was submitted: ", editedProduct);
-    const rawData = JSON.stringify(editedProduct);
-    const requestOptions = {
-      method: "PATCH",
-      body: rawData,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    fetch("http://localhost:4000/products/" + id, requestOptions)
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.status === "success") {
-          console.log(response);
-          props.productsFetch();
-        }
-      })
-      .catch((error) => console.log("error", error));
+    productService.updateProduct(editedProduct, id).then((data) => {
+      console.log(data.message);
+      props.productsFetch();
+    });
   };
 
   return (
     <div className="row align-items-center border-top py-1">
       <div className="col-4 col-lg-2">
         <Link to={`/products/${p.productId}`}>
-          <img src={testImg} className="card-img-top" alt={p.productName} />
+          <img
+            src={
+              p.productImage ? `${server.API_URL}/${p.productImage}` : testImg
+            }
+            className="card-img-top"
+            alt={p.productName}
+          />
         </Link>
       </div>
       <div className="col-4 col-lg-1">
