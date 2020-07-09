@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { cartService } from "../../services/cart.service";
-import { userService } from "../../services/user.service";
-import { authActions, userActions } from "../../actions";
+import { cartService } from "../../../services/cart.service";
+import { userService } from "../../../services/user.service";
+import { authActions, userActions } from "../../../actions";
 
-function AddressCard(props) {
+function CartAddress(props) {
   const user = useSelector((state) => state.userReducer);  
   const loggedIn = useSelector((state) => state.authReducer.loggedIn);
   const [userData, setUserData] = useState(user);
@@ -222,4 +222,4 @@ function AddressCard(props) {
   );
 }
 
-export default AddressCard;
+export default CartAddress;

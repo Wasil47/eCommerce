@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { userService } from "../../../services/user.service";
+import { userService } from "../../../../services/user.service";
 
-function OrderDetails(props) {
+function UserOrderDetails(props) {
   const order = props.order;
   const id = order.orderId;
   const [orderDetails, setOrderDetails] = useState([]);
@@ -81,4 +81,4 @@ function OrderDetails(props) {
   );
 }
 
-export default OrderDetails;
+export default UserOrderDetails;

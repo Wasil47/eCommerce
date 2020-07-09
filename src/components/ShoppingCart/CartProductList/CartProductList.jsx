@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ShoppingCart.css";
 import CartProduct from "./CartProduct/CartProduct";
 
-function ShoppingCart(props) {
+function CartProductList(props) {
   const initialCart = JSON.parse(localStorage.getItem("cartProducts")) || [];
   const [cartProducts, setCartProducts] = useState(initialCart);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -41,4 +41,4 @@ function ShoppingCart(props) {
   );
 }
 
-export default ShoppingCart;
+export default CartProductList;

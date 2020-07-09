@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./Add.css";
-import { productService } from "../../services/product.service";
+import "./AdminAddProduct.css";
+import { productService } from "../../../services/product.service";
 
-function Add() {
+function AdminAddProduct() {
   const initialnewProduct = {
     productName: "",
     productPrice: 0,
@@ -30,6 +30,8 @@ function Add() {
       [key]: value,
     });
   };
+  
+  // show uploading image
   const handleImageChange = (event) => {
     handleChange(event);
     let reader = new FileReader();
@@ -130,4 +132,4 @@ function Add() {
   );
 }
 
-export default Add;
+export default AdminAddProduct;

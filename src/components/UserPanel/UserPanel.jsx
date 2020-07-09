@@ -4,6 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { userService } from "../../services/user.service";
 import { authActions, userActions } from "../../actions";
 
+// todo move users orders to UserOrders component
+// todo move user data to UserData component
+
 function UserPanel(props) {
   const userData = useSelector((state) => state.userReducer);
   const [user, setUser] = useState(userData);

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "./ProductsComp.css";
+import "./ProductList.css";
 import Product from "./Product/Product";
 
 import { cartService } from "../../services/cart.service";
 import { productService } from "../../services/product.service";
 
-function ProductsComp() {
+function ProductList() {
   const [products, setProducts] = useState([]);
 
   const productsFetch = () => {
@@ -14,13 +14,13 @@ function ProductsComp() {
     });
   };
 
-  const productDelete = (id) => {
-    console.log(id);
-    productService.deleteProduct(id).then((data) => {
-      console.log(data.message);
-      productsFetch();
-    });
-  };
+  // const productDelete = (id) => {
+  //   console.log(id);
+  //   productService.deleteProduct(id).then((data) => {
+  //     console.log(data.message);
+  //     productsFetch();
+  //   });
+  // };
 
   const addProductToCart = (product) => {
     cartService.addProductToCart(product);
@@ -43,7 +43,7 @@ function ProductsComp() {
           <Product
             product={product}
             key={product.productId}
-            delete={productDelete}
+            // delete={productDelete}
             toCart={addProductToCart}
           />
         ))}
@@ -53,4 +53,4 @@ function ProductsComp() {
   );
 }
 
-export default ProductsComp;
+export default ProductList;

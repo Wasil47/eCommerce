@@ -1,3 +1,7 @@
+// to do in the future
+// to do in the future
+// to do in the future
+
 import React, { useState } from "react";
 
 function AdminLogin(props) {
@@ -5,6 +9,7 @@ function AdminLogin(props) {
     login: "admin",
     password: "admin",
   };
+
   const [admin, setAdmin] = useState(initialAdmin);
   const [fail, setFail] = useState(false);
   const handleChange = (event) => {
@@ -15,32 +20,31 @@ function AdminLogin(props) {
       [key]: value,
     });
   };
-  const checkAdminNameLastname = () => {
-    // const formData = new FormData(event.target);
-    const rawData = JSON.stringify(admin);
-    const requestOptions = {
-      method: "POST",
-      body: rawData,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    fetch("http://localhost:4000/admin/login", requestOptions)
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-        if (response.status === "Success Login") {
-          setFail(false);
-          props.logIn(true);
-        } else if (response.status === "Wrong login or password") {
-          setFail(true);
-        }
-      })
-      .catch((error) => console.log("frontend error", error));
+  const adminLogin = () => {
+    // const rawData = JSON.stringify(admin);
+    // const requestOptions = {
+    //   method: "POST",
+    //   body: rawData,
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // };
+    // fetch("http://localhost:4000/admin/login", requestOptions)
+    //   .then((response) => response.json())
+    //   .then((response) => {
+    //     console.log(response);
+    //     if (response.status === "Success Login") {
+    //       setFail(false);
+    //       props.logIn(true);
+    //     } else if (response.status === "Wrong login or password") {
+    //       setFail(true);
+    //     }
+    //   })
+    //   .catch((error) => console.log("frontend error", error));
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    checkAdminNameLastname();
+    adminLogin();
   };
   return (
     <div className="col-md-6 my-2">

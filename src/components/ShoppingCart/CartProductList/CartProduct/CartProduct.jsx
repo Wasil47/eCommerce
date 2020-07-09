@@ -21,6 +21,7 @@ function CartProduct(props) {
     props.checkPrice();
   };
 
+  // todo move this fhunctions to services/cart.service.js
   const incrementQuantity = () => {
     const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
     if (product.quantity < maxQuantity) {

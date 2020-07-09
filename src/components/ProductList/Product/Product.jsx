@@ -7,6 +7,7 @@ import * as server from "../../../services/server.constants";
 
 function Product(props) {
   const p = props.product;
+  
   // const onDelete = () => {
   //   props.delete(p.productId);
   // };
