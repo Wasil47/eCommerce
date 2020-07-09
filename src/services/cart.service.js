@@ -9,10 +9,12 @@ const addProductToCart = (product) => {
     (p) => p.productId === product.productId
   );
   if (foundProduct) {
+    // product already in cart, quantity + 1
     const index = cartProducts.indexOf(foundProduct);
     product.quantity = foundProduct.quantity + 1;
     cartProducts.splice(index, 1, product);
   } else {
+    // no such product in cart, push to array and creat new cart in localStorage
     product.quantity = 1;
     cartProducts.push(product);
   }

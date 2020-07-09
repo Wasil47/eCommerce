@@ -1,5 +1,15 @@
 // old file, to delete or update with sequelize
 // old file, to delete or update with sequelize
+// old file, to delete or update with sequelize
+// old file, to delete or update with sequelize
+// old file, to delete or update with sequelize
+// old file, to delete or update with sequelize
+// old file, to delete or update with sequelize
+// old file, to delete or update with sequelize
+// old file, to delete or update with sequelize
+// old file, to delete or update with sequelize
+// old file, to delete or update with sequelize
+// old file, to delete or update with sequelize
 
 const Product = require("../models/product.model");
 const User = require("../models/user.model");

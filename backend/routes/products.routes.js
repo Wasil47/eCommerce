@@ -16,5 +16,4 @@ router.route("/:productId")
 .patch(isAdmin, ProductsController.updateProduct)
 .delete(isAdmin, ProductsController.deleteProduct);
 
-
 module.exports = router;

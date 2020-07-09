@@ -13,5 +13,6 @@ const db = mysql.createConnection({
 });
 /* If connection throw an error, try this commend in ur database:
 ALTER USER '<user>'@'localhost' IDENTIFIED WITH mysql_native_password BY '<password>' */
+// not recommended in production :)
 
 module.exports = db;

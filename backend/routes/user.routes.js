@@ -3,9 +3,7 @@ const router = require("express").Router();
 const UserController = require("../controllers/user.controller");
 const authJwt = require("../middleware/authJwt");
 const verifySingup = require("../middleware/verifySingup");
-
 const AuthController = require("../controllers/auth.controller");
-
 
 router.route("/register")
 .post(verifySingup, UserController.singup);
