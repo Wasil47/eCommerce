@@ -14,7 +14,9 @@ function AdminProducts() {
   const productDelete = (id) => {
     console.log(id);
     productService.deleteProduct(id).then((response) => {
-      console.log(response.message);
+      if (response && response.message) {
+        console.log(response.message);
+      }
       productsFetch();
     });
   };

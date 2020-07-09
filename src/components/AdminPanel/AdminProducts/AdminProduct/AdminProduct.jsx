@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import testImg from "../../../Products/Product/testProduct.jpg";
+import testImg from "../../../../images/testProduct.jpg";
 import { productService } from "../../../../services/product.service";
 
 import * as server from "../../../../services/server.constants";

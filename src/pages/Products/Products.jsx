@@ -1,10 +1,8 @@
 import React from "react";
-import ProductsComp from "../../components/Products/ProductsComp";
+import ProductList from "../../components/ProductList/ProductList";
 
 function Products() {
-  return (
-    <ProductsComp />
-  );
+  return <ProductList />;
 }
 
 export default Products;

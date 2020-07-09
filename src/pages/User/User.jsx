@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useEffect } from "react";
-import Login from "../../components/Login/Login";
-import Register from "../../components/Register/Register";
+import Login from "../../components/UserLogin/Login/Login";
+import Register from "../../components/UserLogin/Register/Register";
 import UserPanel from "../../components/UserPanel/UserPanel";
 import { useDispatch, useSelector } from "react-redux";
 

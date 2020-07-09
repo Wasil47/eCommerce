@@ -32,6 +32,7 @@ const ordersCommands = {
   SELECT_ORDERS_BY_USER_ID: `SELECT * FROM ${ordersTableName} WHERE orderCustomerId = `,
   INSERT_INTO_ORDER_DETAILS: `INSERT INTO ${orderDetailsTableName} SET ?`,
   SELECT_ORDER_DETAILS_BY_ORDER_ID: `SELECT * FROM ${orderDetailsTableName} WHERE detailOrderId = `,
+  SELECT_ORDER_DETAILS_BY_PRODUCT_ID: `SELECT * FROM ${orderDetailsTableName} WHERE detailProductId = `,
 };
 
 const dbCommands = {

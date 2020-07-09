@@ -1,13 +1,13 @@
 import React from "react";
-import Add from "../../components/Add/Add";
-import AdminProducts from "../../components/AdminComp/AdminProducts/AdminProducts";
+import AdminAddProduct from "../../components/AdminPanel/AdminAddProduct/AdminAddProduct";
+import AdminProducts from "../../components/AdminPanel/AdminProducts/AdminProducts";
 
 function Admin() {
   return (
     <div className="container-xl">
       <h1>Hello Admin!</h1>
       {/* <AdminLogin logIn={logIn} /> */}
-      <Add />
+      <AdminAddProduct />
       <AdminProducts />
     </div>
   );

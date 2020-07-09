@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import OrderDetails from "./OrderDetails/OrderDetails";
+import OrderDetails from "./UserOrders/UserOrderDetails/UserOrderDetails";
 import { useSelector, useDispatch } from "react-redux";
 import { userService } from "../../services/user.service";
 import { authActions, userActions } from "../../actions";

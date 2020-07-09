@@ -30,7 +30,7 @@ function AdminAddProduct() {
       [key]: value,
     });
   };
-  
+
   // show uploading image
   const handleImageChange = (event) => {
     handleChange(event);

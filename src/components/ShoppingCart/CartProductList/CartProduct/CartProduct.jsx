@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./CartProduct.css";
-import testImg from "../../Products/Product/testProduct.jpg";
+import testImg from "../../../../images/testProduct.jpg";
 import { Link } from "react-router-dom";
+import * as server from "../../../../services/server.constants";
 
 function CartProduct(props) {
   const minQuantity = 1,
@@ -81,7 +82,16 @@ function CartProduct(props) {
       <div className="row">
         <div className="col-md">
           <Link to={`/products/${product.productId}`}>
-            <img className="cartImg" src={testImg} alt="testImg" />
+            <img
+              className="cartImg"
+              src={
+                product.productImage
+                  ? `${server.API_URL}/${product.productImage}`
+                  : testImg
+              }
+              //  src={testImg}
+              alt="testImg"
+            />
           </Link>
         </div>
         <div className="col-md">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Cart.css";
-import ShoppingCart from "../../components/ShoppingCart/ShoppingCart";
-import AddressCard from "../../components/AddressCard/AddressCard";
+import CartProductList from "../../components/ShoppingCart/CartProductList/CartProductList";
+import CartAddress from "../../components/ShoppingCart/CartAddress/CartAddress";
 
 function Cart() {
   const [showShipping, setShowShipping] = useState(true);
@@ -24,13 +24,13 @@ function Cart() {
   }, []);
   return (
     <div className="d-flex flex-column">
-      <ShoppingCart setPrice={setPrice} refresh={fetchCartProducts} />
+      <CartProductList setPrice={setPrice} refresh={fetchCartProducts} />
       <button onClick={showAddress} className="btn btn-info my-3 ml-auto">
         {/* {showShipping ? "Refresh" : "Shipping Methods"} */}
         Shipping Methods
       </button>
       {showShipping && (
-        <AddressCard products={products} totalPrice={totalPrice} />
+        <CartAddress products={products} totalPrice={totalPrice} />
       )}
     </div>
   );

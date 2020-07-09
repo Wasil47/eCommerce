@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./ShoppingCart.css";
 import CartProduct from "./CartProduct/CartProduct";
 
 function CartProductList(props) {
@@ -10,10 +9,10 @@ function CartProductList(props) {
   const checkPrice = () => {
     const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
     let price = 0;
-    cartProducts.forEach((p)=>{
-      return price = price + p.quantity * p.productPrice;      
-    })
-    const newPrice = Math.round(price*100)/100;
+    cartProducts.forEach((p) => {
+      return (price = price + p.quantity * p.productPrice);
+    });
+    const newPrice = Math.round(price * 100) / 100;
     setTotalPrice(newPrice);
     props.setPrice(newPrice);
     props.refresh();
@@ -33,8 +32,7 @@ function CartProductList(props) {
       ))}
       <div className="card-footer">
         <h5 className="pull-right">
-          <span className="text-muted">Price: </span>$
-          {totalPrice}
+          <span className="text-muted">Price: </span>${totalPrice}
         </h5>
       </div>
     </div>

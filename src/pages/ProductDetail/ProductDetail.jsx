@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import testImg from "../../components/Products/Product/testProduct.jpg";
+import testImg from "../../images/testProduct.jpg";
 import { cartService } from "../../services/cart.service";
 
 import * as server from "../../services/server.constants";
@@ -40,7 +40,16 @@ function ProductDetail() {
   return (
     <div className="row border rounded">
       <div className="col-md-5">
-        <img src={testImg} className="card-img-top" alt={product.productName} />
+        <img
+          src={
+            product.productImage
+              ? `${server.API_URL}/${product.productImage}`
+              : testImg
+          }
+          // src={testImg}
+          className="card-img-top"
+          alt={product.productName}
+        />
       </div>
       <aside className="col-md-7 d-flex flex-column p-3">
         <h3>{product.productName}</h3>
