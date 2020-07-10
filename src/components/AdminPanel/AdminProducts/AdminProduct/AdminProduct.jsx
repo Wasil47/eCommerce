@@ -33,7 +33,9 @@ function AdminProduct(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     productService.updateProduct(editedProduct, id).then((data) => {
-      console.log(data.message);
+      if (data && data.message) {
+        console.log(data.message);
+      }
       props.productsFetch();
     });
   };

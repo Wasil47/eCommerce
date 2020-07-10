@@ -26,6 +26,23 @@ const logout = () => {
   localStorage.removeItem("user");
 };
 
+const register = (newUser) => {
+  const rawData = JSON.stringify(newUser);
+  const requestOptions = {
+    method: "POST",
+    body: rawData,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return fetch(`${server.API_URL}/user/register`, requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => console.log("frontend error", error));
+};
+
 const getUserData = () => {
   const requestOptions = {
     method: "GET",
@@ -125,6 +142,7 @@ const auth = () => {
 export const userService = {
   login,
   logout,
+  register,
   getUserData,
   getUserOrders,
   getOrderDetails,

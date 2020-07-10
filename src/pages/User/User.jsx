@@ -20,7 +20,7 @@ function User() {
     if (user && user.token) {
       userService.auth().then((data) => {
         if (!data) {
-          dispatch(authActions.authFail(data.message));
+          dispatch(authActions.authFail(data));
           dispatch(userActions.getUserDataFail());
           console.log("authorized:", data);
           userService.logout();

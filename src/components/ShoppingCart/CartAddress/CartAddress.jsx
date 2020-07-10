@@ -6,7 +6,7 @@ import { userService } from "../../../services/user.service";
 import { authActions, userActions } from "../../../actions";
 
 function CartAddress(props) {
-  const user = useSelector((state) => state.userReducer);  
+  const user = useSelector((state) => state.userReducer);
   const loggedIn = useSelector((state) => state.authReducer.loggedIn);
   const [userData, setUserData] = useState(user);
 
@@ -64,7 +64,9 @@ function CartAddress(props) {
     };
 
     cartService.createNewOrder(orderData).then((data) => {
-      console.log(data.message);
+      if (data && data.message) {
+        console.log(data.message);
+      }
       window.location.reload(false);
     });
   };

@@ -48,7 +48,9 @@ function AdminAddProduct() {
   const handleSubmit = (event) => {
     event.preventDefault();
     productService.createNewProduct(event.target).then((data) => {
-      console.log(data.message);
+      if (data && data.message) {
+        console.log(data.message);
+      }
       resetForm();
     });
   };
@@ -109,7 +111,7 @@ function AdminAddProduct() {
             className="form-control-file"
             name="productImage"
             accept="image/*"
-            // disabled
+            disabled
             // multiple
           />
         </div>

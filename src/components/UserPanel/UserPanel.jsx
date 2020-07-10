@@ -42,7 +42,7 @@ function UserPanel(props) {
   const updateUserData = () => {
     userService.updateUserData(user).then(
       (data) => {
-        if (data) {
+        if (data && data.message) {
           console.log(data.message);
         }
       },

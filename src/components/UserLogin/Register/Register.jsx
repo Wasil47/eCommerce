@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { userService } from "../../../services/user.service";
 
 function Register() {
   const initialUser = {
@@ -21,26 +22,17 @@ function Register() {
     setNewUser(initialUser);
   };
   const createNewUser = () => {
-    // const formData = new FormData(event.target);
-    const rawData = JSON.stringify(newUser);
-    const requestOptions = {
-      method: "POST",
-      body: rawData,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    fetch("http://localhost:4000/user/register", requestOptions)
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-        if (response.status === "success") {
+    userService.register(newUser).then(
+      (data) => {
+        if (data && data.message) {
+          console.log(data.message);
           resetForm();
-        } else if (response.status === "user exist") {
-          alert("Login is taken!");
         }
-      })
-      .catch((error) => console.log("frontend error", error));
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   };
   const handleSubmit = (event) => {
     event.preventDefault();
