@@ -1,7 +1,7 @@
 
 ## Small Simple e-commerce in React, Node.js + Express, mySQL.
 
- **DEMO: https://wasil47.github.io/eCommerce**
+ **DEMO: https://ecommerce-react-node-mysql.netlify.app/**
 
   
 **You dont have permission to POST, PUT, PATCH or DELETE. Only GET, sorry!** (and POST login)
