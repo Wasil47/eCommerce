@@ -104,6 +104,7 @@ function Register() {
           Register
         </button>
       </form>
+      <h5 style={{color: "red"}}>You dont have permission to POST, PUT, PATCH or DELETE. Only GET, sorry!</h5>
     </div>
   );
 }
