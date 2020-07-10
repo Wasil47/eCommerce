@@ -2,7 +2,7 @@
 
 ## https://wasil47.github.io/eCommerce
 
-
+GET, POST, PATCH, DELETE blocked. Change allowCreateUpdate = false to true dir: backend\config\dbCommands.config.js
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

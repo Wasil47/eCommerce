@@ -21,7 +21,7 @@ db.connect((err) => {
 
 app.get("/", (req, res) => {
   res.send(
-    "Welcome to my Node.js server. Go to /products to check products list."
+    "<h2>Welcome to my Node.js server. Go to /products to check products list.</h2>"
   );
 });
 
@@ -29,7 +29,6 @@ app.get("/", (req, res) => {
 app.use("/user", userRoutes);
 app.use("/products", productsRoutes);
 app.use("/orders", ordersRoutes);
-
 
 // fix login (frontend) then: delete
 // const routes = require("./routes/appRoutes");

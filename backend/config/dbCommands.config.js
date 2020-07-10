@@ -3,6 +3,9 @@ const productsTableName = "products";
 const ordersTableName = "orders";
 const orderDetailsTableName = "orderdetails";
 
+// true to enable POST, PATH etc, false if only GET request
+const allowCreateUpdate = false;
+
 // if db err (e.g. wrong mySQL command)
 const ifDbErr = (err, res) => {
   if (err) {
@@ -40,6 +43,7 @@ const dbCommands = {
   userCommands: userCommands,
   productsCommands: productsCommands,
   ordersCommands: ordersCommands,
+  allowCreateUpdate: allowCreateUpdate,
 };
 
 module.exports = dbCommands;
