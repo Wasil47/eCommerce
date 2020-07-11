@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import testImg from "../../images/testProduct.jpg";
+import testImg2 from "./testProduct.jpg";
 import { cartService } from "../../services/cart.service";
 
 import * as server from "../../services/server.constants";
@@ -44,7 +45,7 @@ function ProductDetail() {
           src={
             product.productImage
               ? `${server.API_URL}/${product.productImage}`
-              : testImg
+              : testImg || testImg2
           }
           // src={testImg}
           className="card-img-top"

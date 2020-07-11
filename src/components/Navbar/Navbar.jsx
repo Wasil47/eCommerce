@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 function Navbar() {
   return (
     <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <NavLink className="navbar-brand" to="/">
+      <NavLink className="navbar-brand" to="/home">
         Ecommerce
       </NavLink>
       <button
@@ -21,7 +21,7 @@ function Navbar() {
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
-            <NavLink className="nav-link" to="/products">
+            <NavLink className="nav-link" to="/home">
               Products
             </NavLink>
           </li>

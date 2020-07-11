@@ -43,7 +43,7 @@ function AdminProduct(props) {
   return (
     <div className="row align-items-center border-top py-1">
       <div className="col-4 col-lg-2">
-        <Link to={`/products/${p.productId}`}>
+        <Link to={`/product/${p.productId}`}>
           <img
             src={
               p.productImage ? `${server.API_URL}/${p.productImage}` : testImg

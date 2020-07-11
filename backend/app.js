@@ -22,9 +22,6 @@ db.connect((err) => {
   console.log("Successfully connected to SQL database!");
 });
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
 // app.get("/", (req, res) => {
 //   res.send(
 //     "<h2>Welcome to my Node.js server. Go to /products to check products list.</h2>"
@@ -35,5 +32,10 @@ app.get('/*', (req, res) => {
 app.use("/user", userRoutes);
 app.use("/products", productsRoutes);
 app.use("/orders", ordersRoutes);
+
+//
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 module.exports = app;

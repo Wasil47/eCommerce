@@ -19,7 +19,7 @@ function Product(props) {
   return (
     <div className="col-md-6 col-lg-4 col-xl-3 mb-4">
       <div className="card h-100 product">
-        <Link to={`/products/${p.productId}`}>
+        <Link to={`/product/${p.productId}`}>
           <img
             src={
               p.productImage ? `${server.API_URL}/${p.productImage}` : testImg
@@ -31,7 +31,7 @@ function Product(props) {
         </Link>
         <div className="card-body d-flex flex-column">
           <Link
-            to={`/products/${p.productId}`}
+            to={`/product/${p.productId}`}
             style={{ color: "#000", textDecoration: "none" }}
           >
             <h5 className="card-title">{p.productName}</h5>
