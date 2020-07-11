@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./config/db.config");
+const path = require('path');
 
 const userRoutes = require("./routes/user.routes");
 const productsRoutes = require("./routes/products.routes");
@@ -13,26 +14,26 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(express.static(path.join(__dirname, 'build')));
+
 // connect to database
 db.connect((err) => {
   if (err) throw err;
   console.log("Successfully connected to SQL database!");
 });
 
-app.get("/", (req, res) => {
-  res.send(
-    "<h2>Welcome to my Node.js server. Go to /products to check products list.</h2>"
-  );
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+// app.get("/", (req, res) => {
+//   res.send(
+//     "<h2>Welcome to my Node.js server. Go to /products to check products list.</h2>"
+//   );
+// });
 
 // Routes which should handle requests
 app.use("/user", userRoutes);
 app.use("/products", productsRoutes);
 app.use("/orders", ordersRoutes);
-
-// fix login (frontend) then: delete
-// const routes = require("./routes/appRoutes");
-// routes(app);
-/// end of delete section
 
 module.exports = app;
