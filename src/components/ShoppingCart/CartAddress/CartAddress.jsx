@@ -195,7 +195,7 @@ function CartAddress(props) {
       <div className="my-3 ml-auto d-flex flex-row">
         {props.products.length === 0 && (
           <Link
-            to={`/products`}
+            to={`/home`}
             style={{ color: "#f75050", textDecoration: "none" }}
             className="form-text text-danger mx-2"
           >
@@ -204,7 +204,7 @@ function CartAddress(props) {
         )}
         {!loggedIn && (
           <Link
-            to={`/user/`}
+            to={`/user`}
             style={{ color: "#f75050", textDecoration: "none" }}
             className="form-text text-danger mx-2"
           >
