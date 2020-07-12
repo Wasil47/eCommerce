@@ -5,29 +5,30 @@ import { cartService } from "../../services/cart.service";
 
 import * as server from "../../services/server.constants";
 
+// in case SQL DB server is down:
+import { productService } from "../../services/product.service";
+
 function ProductDetail() {
   const { id } = useParams();
-  const [product, setProduct] = useState({
+  const initialProduct = {
     productName: "",
     productPrice: "",
     productStock: "",
     productImage: "",
     productDesc: "",
-  });
+  };
+  const [product, setProduct] = useState(initialProduct);
+  const [dbStatus, setDbStatus] = useState(true);
 
   const productFetch = () => {
-    fetch(`${server.API_URL}/products/` + id)
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(data);
+    productService.getProduct(id).then((data) => {
+      if (data) {
         setProduct(data);
-      })
-      .catch((err) => {
-        console.log("product not found, ", err);
-        setProduct({
-          productName: "Product not found",
-        });
-      });
+        setDbStatus(true);
+      } else {
+        setDbStatus(false);
+      }
+    });
   };
 
   const addToCart = () => {
@@ -57,6 +58,11 @@ function ProductDetail() {
         <p className="text-muted">stock: {product.productStock}</p>
         <dl className="mt-1">
           <dt>Description:</dt>
+          {!dbStatus && (
+            <small style={{ color: "red" }}>
+              mySQL server is down/restarting.
+            </small>
+          )}
           <dd>{product.productDesc}</dd>
         </dl>
         <button

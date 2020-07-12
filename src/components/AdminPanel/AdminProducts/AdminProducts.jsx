@@ -2,12 +2,21 @@ import React, { useEffect, useState } from "react";
 import AdminProduct from "./AdminProduct/AdminProduct";
 import { productService } from "../../../services/product.service";
 
+// in case SQL DB server is down:
+import { exampleProducts } from "../../../services/products.examples";
+
 function AdminProducts() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(exampleProducts);
+  const [dbStatus, setDbStatus] = useState(true);
 
   const productsFetch = () => {
     productService.getAllProducts().then((data) => {
-      setProducts(data);
+      if (data) {
+        setProducts(data);
+        setDbStatus(true);
+      } else {
+        setDbStatus(false);
+      }
     });
   };
 
@@ -29,6 +38,11 @@ function AdminProducts() {
     <div className="container px-0 mt-4">
       <div className="col">
         <h1>Products:</h1>
+        {!dbStatus && (
+          <small style={{ color: "red" }}>
+            mySQL server is down/restarting. Products imported from .js
+          </small>
+        )}
       </div>
       {/* Products: */}
       <div className="d-flex flex-column">

@@ -11,6 +11,7 @@ function UserPanel(props) {
   const userData = useSelector((state) => state.userReducer);
   const [user, setUser] = useState(userData);
   const [userOrders, setUserOrders] = useState([]);
+  const [dbStatus, setDbStatus] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -21,6 +22,9 @@ function UserPanel(props) {
           dispatch(userActions.getUserDataSuccess(data));
           setUser(data);
           fetchUserOrders(data.customerId);
+          setDbStatus(true);
+        } else {
+          setDbStatus(false);
         }
       },
       (error) => {
@@ -80,6 +84,11 @@ function UserPanel(props) {
   return (
     <div className="col my-2">
       <h3 className="text-secondary">User panel:</h3>
+      {!dbStatus && (
+        <small style={{ color: "red" }}>
+          mySQL server is down/restarting.
+        </small>
+      )}
 
       {/* USER DATA */}
       <div className="card">
@@ -193,7 +202,7 @@ function UserPanel(props) {
         </div>
         <div className="card-footer">
           <button
-            onClick={props.fetchUserOrders}
+            onClick={fetchUserOrders}
             className="btn btn-primary pull-right"
           >
             Refresh

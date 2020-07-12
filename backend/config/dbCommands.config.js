@@ -13,7 +13,7 @@ const ifDbErr = (err, res) => {
       message: "Backend/DB error",
     });
     console.log("mySQL error:", err);
-    throw err;
+    return err;
   }
 };
 

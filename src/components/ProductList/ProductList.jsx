@@ -5,12 +5,21 @@ import Product from "./Product/Product";
 import { cartService } from "../../services/cart.service";
 import { productService } from "../../services/product.service";
 
+// in case SQL DB server is down:
+import { exampleProducts } from "../../services/products.examples";
+
 function ProductList() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(exampleProducts);
+  const [dbStatus, setDbStatus] = useState(true);
 
   const productsFetch = () => {
     productService.getAllProducts().then((data) => {
-      setProducts(data);
+      if (data) {
+        setProducts(data);
+        setDbStatus(true);
+      } else {
+        setDbStatus(false);
+      }
     });
   };
 
@@ -35,6 +44,11 @@ function ProductList() {
     <div className="container-xl">
       <div className="col">
         <h1>Products:</h1>
+        {!dbStatus && (
+          <small style={{ color: "red" }}>
+            mySQL server is down/restarting. Products imported from .js
+          </small>
+        )}
       </div>
       {/* Products: */}
       <div className="row">
