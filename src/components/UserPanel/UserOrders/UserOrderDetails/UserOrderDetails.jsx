@@ -62,7 +62,7 @@ function UserOrderDetails(props) {
               <div className="col-2 col-lg-1 text-right">{i}.</div>
 
               <div className="col-10 col-lg-7 text-primary">
-                <Link to={`/products/${product.detailProductId}`}>
+                <Link to={`/product/${product.detailProductId}`}>
                   {product.detailName}
                 </Link>
               </div>
